@@ -39,3 +39,11 @@ People 페이지
 로컬 확인
 index.html을 브라우저에서 열어도 기본 화면은 확인할 수 있습니다.
 GitHub Pages에 올리면 상대경로 링크가 정상 동작합니다.
+
+[2026-08-19 compact revision]
+- 메인 홈 배너 세로 여백 축소: 92/80px → 60/54px
+- 메인 이미지 슬라이더 최소 높이 축소: 410px → 350px
+- Hero 버튼/통계 사이 세로 간격 축소
+- 하단 Footer 전체 높이 축소: 56/26px → 34/18px
+- Footer WBSL / Sitemap / Lab / Contact 영역의 항목 간격과 행간 축소
+- Footer 하단 copyright 영역 높이 축소
