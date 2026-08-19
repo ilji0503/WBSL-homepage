@@ -41,7 +41,7 @@
   <div class="wrap hero-inner">
     <div>
       <div class="hero-eyebrow">Pukyong National University · Display & Semiconductor Engineering</div>
-      <h1>와이드밴드갭 반도체의 <em>소자 물리와 성능</em>을 연구합니다</h1>
+      <h1>와이드밴드갭 반도체의<br><em>소자 물리와 성능</em>을 연구합니다</h1>
       <p>WBSL은 3-D circuit simulation, GaInN/GaN 기반 micro-LED, 그리고 와이드밴드갭 반도체의 전기·광학·열·신뢰성 분석을 중심으로 연구합니다.</p>
       <div class="hero-actions">
         <a href="research.html" class="btn btn-primary">Explore Research</a>
@@ -53,19 +53,34 @@
         <div><b>3</b><span>Core Research Fields</span></div>
       </div>
     </div>
-    <div class="ribbon-stage">
-      <svg viewBox="0 0 460 420" fill="none">
-        <defs>
-          <linearGradient id="gradCyan" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2fd0c0"/><stop offset="1" stop-color="#7ee8de"/></linearGradient>
-          <linearGradient id="gradWhite" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#8fa6c9"/></linearGradient>
-        </defs>
-        <path class="ribbon-path r1" d="M40,60 C160,10 140,140 260,120 C380,100 340,220 420,210"/>
-        <path class="ribbon-path r2" d="M20,180 C120,240 160,120 280,180 C360,220 380,300 440,280"/>
-        <path class="ribbon-path r3" d="M60,320 C160,260 220,360 320,300 C380,270 400,320 440,300"/>
-        <circle class="residue" cx="260" cy="120" r="4" fill="#2fd0c0"/>
-        <circle class="residue" cx="280" cy="180" r="4" fill="#ffffff"/>
-        <circle class="residue" cx="320" cy="300" r="4" fill="#2fd0c0"/>
-      </svg>
+
+    <div class="hero-slider" data-hero-slider aria-label="WBSL research image slider">
+      <div class="hero-slide slide-1 active">
+        <div class="hero-slide-copy">
+          <span class="slide-kicker">Research Highlight</span>
+          <h3>3-D Circuit Simulation</h3>
+          <p>전기·광학·온도 특성을 함께 예측하는 소자 모델링 및 등가회로 해석.</p>
+        </div>
+      </div>
+      <div class="hero-slide slide-2">
+        <div class="hero-slide-copy">
+          <span class="slide-kicker">Research Highlight</span>
+          <h3>GaInN/GaN Micro-LED</h3>
+          <p>고효율 micro-LED의 current injection, spreading, efficiency 및 sidewall loss 연구.</p>
+        </div>
+      </div>
+      <div class="hero-slide slide-3">
+        <div class="hero-slide-copy">
+          <span class="slide-kicker">Research Highlight</span>
+          <h3>WBG Reliability</h3>
+          <p>와이드밴드갭 반도체의 electrical, optical, thermal, reliability characterization.</p>
+        </div>
+      </div>
+      <div class="hero-slider-dots" aria-label="슬라이드 선택">
+        <button class="hero-slider-dot active" type="button" aria-label="슬라이드 1"></button>
+        <button class="hero-slider-dot" type="button" aria-label="슬라이드 2"></button>
+        <button class="hero-slider-dot" type="button" aria-label="슬라이드 3"></button>
+      </div>
     </div>
   </div>
 </section>
@@ -140,14 +155,8 @@
       <p>Board와 Publication의 최신 항목을 한 곳에서 보여줍니다. 데이터 파일을 수정하면 이 영역도 자동으로 함께 갱신됩니다.</p>
     </div>
     <div class="news-grid">
-      <div class="news-col">
-        <h3>Latest News</h3>
-        <div id="home-news-list"></div>
-      </div>
-      <div class="news-col">
-        <h3>Recent Publications</h3>
-        <div id="home-publication-list"></div>
-      </div>
+      <div class="news-col"><h3>Latest News</h3><div id="home-news-list"></div></div>
+      <div class="news-col"><h3>Recent Publications</h3><div id="home-publication-list"></div></div>
     </div>
     <div class="section-foot update-actions">
       <a href="board.html" class="btn btn-outline">소식 전체 보기</a>
