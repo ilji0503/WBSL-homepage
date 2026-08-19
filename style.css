@@ -440,3 +440,38 @@ p, li{
   .tag{width:max-content;}
   .foot-grid{grid-template-columns:1fr;}
 }
+
+
+/* ===== DATA-DRIVEN CONTENT ===== */
+.update-actions{display:flex; gap:12px; flex-wrap:wrap;}
+.empty-state{color:var(--ink-soft); font-size:14px; padding:18px 0;}
+.publication-link,.publication-title,.board-title{transition:color .18s ease;}
+a.publication-link:hover,a.publication-title:hover,a.board-title:hover{color:var(--cyan-dark);}
+.publication-list,.board-list{max-width:980px;}
+.publication-year,.board-year{margin-top:42px;}
+.publication-year:first-child,.board-year:first-child{margin-top:0;}
+.publication-item{
+  display:grid; grid-template-columns:180px minmax(0,1fr); gap:26px;
+  padding:22px 0; border-bottom:1px solid var(--line); align-items:start;
+}
+.publication-meta{display:flex; flex-direction:column; align-items:flex-start; gap:9px;}
+.publication-journal{font-size:13px; color:var(--ink-soft); line-height:1.45;}
+.publication-body{min-width:0;}
+.publication-title{display:block; font-size:15.5px; font-weight:600; line-height:1.55; color:var(--ink); word-break:normal; overflow-wrap:break-word;}
+.publication-authors{font-size:13.5px; color:var(--ink-soft); line-height:1.6; margin-top:7px;}
+.board-item{
+  display:flex; gap:20px; padding:22px 0; border-bottom:1px solid var(--line); align-items:flex-start;
+}
+.board-item.has-image{display:grid; grid-template-columns:180px minmax(0,1fr); gap:24px;}
+.board-thumb{width:180px; aspect-ratio:4/3; object-fit:cover; border-radius:12px; border:1px solid var(--line); background:var(--sky);}
+.board-body{min-width:0;}
+.board-meta{display:flex; align-items:center; gap:10px; margin-bottom:9px; flex-wrap:wrap;}
+.board-category{font-family:'Space Grotesk',sans-serif; font-size:11.5px; color:var(--ink-soft); letter-spacing:.03em;}
+.board-title{display:block; font-size:15px; font-weight:500; line-height:1.65; color:var(--ink); word-break:keep-all; overflow-wrap:break-word;}
+
+@media (max-width:700px){
+  .publication-item{grid-template-columns:1fr; gap:10px;}
+  .publication-meta{flex-direction:row; align-items:center; flex-wrap:wrap;}
+  .board-item.has-image{grid-template-columns:1fr;}
+  .board-thumb{width:100%; max-width:360px;}
+}

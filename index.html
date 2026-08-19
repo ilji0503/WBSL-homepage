@@ -134,20 +134,25 @@
 
 <section class="alt">
   <div class="wrap">
-    <div class="section-head"><span class="eyebrow">Board</span><h2>연구실 소식</h2></div>
+    <div class="section-head">
+      <span class="eyebrow">Updates</span>
+      <h2>최근 연구실 소식과 논문</h2>
+      <p>Board와 Publication의 최신 항목을 한 곳에서 보여줍니다. 데이터 파일을 수정하면 이 영역도 자동으로 함께 갱신됩니다.</p>
+    </div>
     <div class="news-grid">
       <div class="news-col">
-        <h3>Conference Participation</h3>
-        <div class="news-item"><span class="tag new">NEW</span><p>류민지, 황일지 학생이 ICMOVPE XXII에서 포스터 발표를 진행했습니다.</p></div>
-        <div class="news-item"><span class="tag">2026</span><p>황일지 학생이 한국광전자공학회 제2회 하계학술대회에서 구두 발표를 진행했습니다.</p></div>
+        <h3>Latest News</h3>
+        <div id="home-news-list"></div>
       </div>
       <div class="news-col">
-        <h3>Research Topics</h3>
-        <div class="news-item"><span class="tag">μLED</span><p>GaInN/GaN micro-LED의 current injection, efficiency 및 sidewall effect 분석</p></div>
-        <div class="news-item"><span class="tag">WBG</span><p>와이드밴드갭 반도체의 electrical, optical, thermal, reliability characterization</p></div>
+        <h3>Recent Publications</h3>
+        <div id="home-publication-list"></div>
       </div>
     </div>
-    <div class="section-foot"><a href="board.html" class="btn btn-outline">소식 전체 보기</a></div>
+    <div class="section-foot update-actions">
+      <a href="board.html" class="btn btn-outline">소식 전체 보기</a>
+      <a href="publication.html" class="btn btn-outline">논문 전체 보기</a>
+    </div>
   </div>
 </section>
 
@@ -162,6 +167,8 @@
     <div class="foot-bottom"><span>© 2026 WBSL. All rights reserved.</span><span>Pukyong National University</span></div>
   </div>
 </footer>
+<script src="data/publications.js"></script>
+<script src="data/news.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
