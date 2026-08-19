@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <header>
   <div class="wrap">
     <nav>
@@ -36,57 +35,40 @@
     </nav>
   </div>
 </header>
-
 <section class="page-banner">
   <div class="hero-bg"><div class="hero-grid"></div></div>
-  <div class="wrap">
-    <span class="eyebrow">Research</span>
-    <h1>Research</h1>
-    <div class="crumb"><a href="index.html">Home</a> / Research</div>
-  </div>
+  <div class="wrap"><span class="eyebrow">Research</span><h1>Research</h1><div class="crumb"><a href="index.html">Home</a> / Research</div></div>
 </section>
-
 <section>
   <div class="wrap">
     <div class="section-head">
-      <span class="eyebrow">Research Focus</span>
-      <h2>소자 물리에서 모델링·신뢰성까지</h2>
-      <p>WBSL은 III-nitride와 SiC 등 wide-bandgap semiconductors를 기반으로 광전자 및 전력반도체 소자의 전하 수송, 재결합, 효율, 결함 및 열화 메커니즘을 연구합니다. 실험과 모델링을 연결해 소자 성능의 원인을 정량적으로 분석합니다.</p>
+      <span class="eyebrow">Representative Research Fields</span>
+      <h2>WBSL Research</h2>
+      <p>III-nitride와 SiC 기반 와이드밴드갭 반도체를 대상으로 소자 모델링, micro-LED, 다중 물성 분석과 신뢰성 연구를 수행합니다.</p>
     </div>
-    <div class="card-grid cols-2">
-
-      <div class="r-card">
-        <div class="r-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2" stroke-linecap="round"/></svg></div>
-        <h3>Micro-LED & III-Nitride Optoelectronics</h3>
-        <p>GaInN/GaN 기반 LED와 micro-LED에서 소자 크기, sidewall condition, carrier injection 및 recombination이 효율에 미치는 영향을 분석합니다. 전기·광학적 측정과 구조 설계를 통해 고효율 발광소자의 성능 제한 원인을 규명합니다.</p>
-        <div class="tags"><span>GaInN/GaN</span><span>Micro-LED</span><span>Efficiency</span><span>Sidewall</span></div>
-      </div>
-
-      <div class="r-card">
-        <div class="r-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke-linecap="round"/></svg></div>
-        <h3>Device Modeling & Simulation</h3>
-        <p>3-D circuit simulator와 equivalent-circuit model을 이용해 반도체 소자의 current distribution과 electrical, optical, thermal characteristics를 예측합니다. ITO와 n-GaN의 상대 저항 등 구조 변수에 따른 current path와 current spreading을 분석합니다.</p>
-        <div class="tags"><span>3-D Circuit</span><span>Equivalent Circuit</span><span>Current Spreading</span><span>Electro-Thermal</span></div>
-      </div>
-
-      <div class="r-card">
-        <div class="r-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 12l9-9 9 9-9 9-9-9z"/></svg></div>
-        <h3>Carrier Dynamics & Reliability</h3>
-        <p>전기·광학·열 특성 측정과 current-stress 실험을 통해 carrier transport, defect dynamics, leakage current 및 장기 열화 메커니즘을 규명합니다. Micro-LED에서는 sidewall defect와 carrier tunneling이 효율 및 신뢰성에 미치는 영향을 분석합니다.</p>
-        <div class="tags"><span>Current Stress</span><span>Defects</span><span>Leakage</span><span>Reliability</span></div>
-      </div>
-
-      <div class="r-card">
-        <div class="r-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Wide-Bandgap Optoelectronic & Power Devices</h3>
-        <p>III-nitride와 SiC 등 와이드밴드갭 재료를 기반으로 광전자 및 전력반도체 소자의 전기·광학적 물성, carrier dynamics와 breakdown-related characteristics를 연구합니다. 소자의 효율과 동작 한계를 결정하는 물리적 요인을 분석합니다.</p>
-        <div class="tags"><span>III-Nitride</span><span>SiC</span><span>Carrier Transport</span><span>Breakdown</span></div>
-      </div>
-
+    <div class="research-feature-list">
+      <article class="research-feature">
+        <div class="research-feature-media"><img src="assets/simulation.webp" alt="3-D circuit simulation result"></div>
+        <div class="research-feature-copy"><span class="research-no">01</span><h3>3-D Circuit Simulation & Device Modeling</h3><p>전기적·광학적·열적 특성을 동시에 예측할 수 있는 3-D circuit simulator를 개발·활용합니다. 복잡한 mesh를 저항, 다이오드, 커패시터 및 인덕터 등가회로로 구성하여 실제 소자의 전류 분포와 온도 분포를 해석합니다.</p><div class="tags"><span>p-i-n junction</span><span>MOSFET</span><span>Nanowire</span><span>Equivalent circuit</span></div></div>
+      </article>
+      <article class="research-feature reverse">
+        <div class="research-feature-media"><img src="assets/microled.webp" alt="GaInN/GaN RGB micro-LED emission"></div>
+        <div class="research-feature-copy"><span class="research-no">02</span><h3>GaInN/GaN-based RGB Micro-LEDs</h3><p>고효율 GaInN/GaN 기반 RGB micro light-emitting device를 목표로 소자의 current injection, current spreading, efficiency 및 sidewall-related loss mechanism을 분석합니다. III-nitride 발광소자의 구조와 전하 수송 특성이 성능에 미치는 영향을 규명합니다.</p><div class="tags"><span>GaInN/GaN</span><span>Micro-LED</span><span>Current spreading</span><span>Efficiency</span></div></div>
+      </article>
+      <article class="research-feature">
+        <div class="research-feature-media research-media-pair"><img src="assets/characterization.webp" alt="Noise characterization setup"><img src="assets/thermal.webp" alt="Thermal characterization result"></div>
+        <div class="research-feature-copy"><span class="research-no">03</span><h3>Electrical · Optical · Thermal · Reliability Characterization</h3><p>와이드밴드갭 반도체 소자를 전기·광학·열·신뢰성 관점에서 종합적으로 분석합니다. defect와 electro-thermal behavior의 상관관계를 해석하고, 장시간 구동에 따른 열화와 noise 특성, wafer-level uniformity를 평가합니다.</p><div class="tags"><span>Defect analysis</span><span>Electro-thermal</span><span>Reliability</span><span>Noise</span><span>Wafer mapping</span></div></div>
+      </article>
     </div>
   </div>
 </section>
-
+<section class="alt">
+  <div class="wrap research-scope">
+    <span class="eyebrow">Materials & Devices</span><h2>Wide-bandgap semiconductor platform</h2>
+    <p>WBSL은 GaN을 포함한 III-nitride와 SiC 등 화합물 와이드밴드갭 반도체를 기반으로 광전자 소자와 전력 반도체 소자의 성능 및 신뢰성을 연구합니다.</p>
+    <div class="scope-tags"><span>III-Nitride</span><span>GaN</span><span>GaInN</span><span>SiC</span><span>Optoelectronics</span><span>Power Devices</span></div>
+  </div>
+</section>
 <footer>
   <div class="wrap">
     <div class="foot-grid">
@@ -95,7 +77,7 @@
           <svg width="24" height="24" viewBox="0 0 34 34" fill="none"><path d="M8 4C8 4 14 8 14 17C14 26 8 30 8 30" stroke="#2fd0c0" stroke-width="2.4" stroke-linecap="round"/><path d="M26 4C26 4 20 8 20 17C20 26 26 30 26 30" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
           <b>WBSL</b>
         </div>
-        <p style="font-size:13.5px; line-height:1.7;">국립부경대학교 공과대학 전기공학부 디스플레이반도체공학전공<br>Room 902, Building Gaon, Busan, Korea</p>
+        <p style="font-size:13.5px; line-height:1.7;">국립부경대학교 전기공학부 디스플레이반도체공학전공<br>부산광역시 남구 용소로 45, 가온관(B21)</p>
       </div>
       <div>
         <h4>Sitemap</h4>
@@ -103,20 +85,19 @@
       </div>
       <div>
         <h4>Lab</h4>
-        <ul><li><a href="board.html">Board</a></li><li><a href="contact.html">Contact us</a></li></ul>
+        <ul><li><a href="board.html">Board</a></li><li><a href="contact.html">Contact us</a></li><li><a href="https://han.pknu.ac.kr" target="_blank" rel="noopener">Lab website</a></li></ul>
       </div>
       <div>
         <h4>Contact</h4>
-        <ul><li><a href="mailto:wbsl@example.ac.kr">wbsl@example.ac.kr</a></li><li><a href="tel:+8200-000-0000">+82-00-000-0000</a></li></ul>
+        <ul><li><a href="mailto:han@pknu.ac.kr">han@pknu.ac.kr</a></li><li><a href="tel:+82516296409">+82-51-629-6409</a></li></ul>
       </div>
     </div>
     <div class="foot-bottom">
       <span>© 2026 WBSL. All rights reserved.</span>
-      <span>Design template</span>
+      <span>Pukyong National University</span>
     </div>
   </div>
 </footer>
-
 <script src="script.js"></script>
 </body>
 </html>
