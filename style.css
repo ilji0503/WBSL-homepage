@@ -158,18 +158,23 @@ section{padding:88px 0;}
 .check-list svg{width:17px; height:17px; stroke:var(--cyan-dark); flex-shrink:0;}
 
 /* ===== PROFESSOR PAGE ===== */
-.prof-layout{display:grid; grid-template-columns:.85fr 1.15fr; gap:56px; align-items:start;}
+.prof-layout{display:grid; grid-template-columns:280px minmax(0,1fr); gap:56px; align-items:start;}
 .prof-photo{
   aspect-ratio:1; border-radius:20px; background:linear-gradient(150deg,var(--indigo),var(--navy) 65%,#08152b);
   display:flex; align-items:center; justify-content:center; box-shadow:0 24px 48px -20px rgba(15,31,61,.4);
 }
 .prof-photo svg{width:74px; height:74px; stroke:var(--cyan-soft);}
-.prof-name{font-size:26px; font-weight:700; margin-bottom:4px;}
-.prof-role{color:var(--ink-soft); font-size:14.5px; margin-bottom:22px;}
-.prof-block{margin-bottom:26px;}
-.prof-block h3{font-size:14px; font-family:'Space Grotesk',sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:12px; padding-bottom:10px; border-bottom:2px solid var(--navy);}
-.prof-block li{font-size:14.5px; line-height:1.9; color:var(--ink);}
-.prof-block li span{color:var(--ink-soft); font-family:'Space Grotesk',sans-serif; font-size:12.5px; margin-right:8px;}
+.prof-name{display:flex; align-items:baseline; flex-wrap:wrap; gap:8px; font-size:26px; font-weight:700; margin-bottom:4px;}
+.prof-name-en{font-size:15px; font-weight:500; color:var(--ink-soft);}
+.prof-role{color:var(--ink-soft); font-size:14.5px; line-height:1.6; margin-bottom:26px;}
+.prof-block{margin-bottom:30px;}
+.prof-block h3{font-size:14px; font-family:'Space Grotesk',sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid var(--navy);}
+.career-list{display:grid; gap:9px;}
+.career-list li{display:grid; grid-template-columns:88px minmax(0,1fr); column-gap:12px; align-items:start; font-size:14.5px; line-height:1.65; color:var(--ink);}
+.career-list li span{color:var(--ink-soft); font-family:'Space Grotesk',sans-serif; font-size:12.5px; line-height:1.9; white-space:nowrap;}
+.interest-list{display:grid; gap:8px;}
+.interest-list li{position:relative; padding-left:14px; font-size:14.5px; line-height:1.65; color:var(--ink);}
+.interest-list li::before{content:'·'; position:absolute; left:0; top:0; color:var(--cyan-dark); font-weight:700;}
 
 /* ===== RECRUIT BANNER ===== */
 .recruit{
@@ -231,6 +236,8 @@ footer{background:var(--navy); color:rgba(255,255,255,.7); padding:56px 0 26px;}
 
 @media (max-width:920px){
   .nav-links, .nav-cta .btn-outline{display:none;}
+  .prof-photo{max-width:300px;}
+  .career-list li{grid-template-columns:88px minmax(0,1fr);}
   .burger{display:flex;}
   .hero-inner{grid-template-columns:1fr;}
   .ribbon-stage{height:260px;}
@@ -242,6 +249,7 @@ footer{background:var(--navy); color:rgba(255,255,255,.7); padding:56px 0 26px;}
   .recruit{flex-direction:column; align-items:flex-start;}
 }
 @media (max-width:560px){
+  .career-list li{grid-template-columns:1fr; gap:2px;}
   .card-grid, .people-grid, .card-grid.cols-2{grid-template-columns:1fr;}
   .hero-stats{flex-wrap:wrap; gap:20px;}
   .foot-grid{grid-template-columns:1fr;}
@@ -258,3 +266,177 @@ footer{background:var(--navy); color:rgba(255,255,255,.7); padding:56px 0 26px;}
 .location-note{display:flex;gap:10px;align-items:baseline;margin-top:18px;font-size:13.5px;color:var(--ink-soft);}
 .location-note b{color:var(--navy);}
 @media (max-width:920px){.card-grid.research-3{grid-template-columns:1fr;}}
+
+/* ===== SITE-WIDE TYPOGRAPHY & WRAPPING FIX ===== */
+:root{
+  --maxw:1240px;
+}
+
+/* Korean should wrap by words, while long English/URLs can still break safely. */
+body,
+p, li, span, a, h1, h2, h3, h4{
+  word-break:keep-all;
+  overflow-wrap:break-word;
+}
+h1,h2,h3{
+  text-wrap:balance;
+}
+p, li{
+  text-wrap:pretty;
+}
+
+.wrap{
+  padding-left:32px;
+  padding-right:32px;
+}
+
+/* Keep page headings and introductory copy from becoming unnaturally narrow. */
+.section-head{
+  max-width:760px;
+}
+.section-head h2{
+  font-size:clamp(25px,2.6vw,32px);
+  line-height:1.3;
+}
+.section-head p{
+  max-width:720px;
+  line-height:1.72;
+}
+
+/* Home hero: slightly smaller title and more usable copy width. */
+.hero-inner{
+  grid-template-columns:1.08fr .92fr;
+  gap:56px;
+}
+.hero h1{
+  max-width:650px;
+  font-size:clamp(32px,3.7vw,48px);
+  line-height:1.16;
+}
+.hero p{
+  max-width:560px;
+  font-size:16px;
+  line-height:1.75;
+}
+.hero-stats{
+  gap:42px;
+}
+
+/* Research cards: allow natural wrapping without cramped columns. */
+.card-grid.research-3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:24px;
+}
+.r-card{
+  min-width:0;
+}
+.r-card h3{
+  font-size:16px;
+  line-height:1.4;
+}
+.r-card p{
+  font-size:14px;
+  line-height:1.7;
+}
+
+/* Professor page: give the biography more horizontal room. */
+.prof-layout{
+  grid-template-columns:240px minmax(0,1fr);
+  gap:48px;
+}
+.prof-layout > *{
+  min-width:0;
+}
+.prof-name{
+  line-height:1.3;
+}
+.prof-role{
+  max-width:760px;
+  line-height:1.65;
+}
+.prof-role span{
+  display:block;
+}
+.prof-block{
+  max-width:860px;
+}
+.career-list{
+  gap:10px;
+}
+.career-list li{
+  grid-template-columns:104px minmax(0,1fr);
+  column-gap:16px;
+  line-height:1.7;
+}
+.interest-list li{
+  line-height:1.7;
+}
+
+/* News / publication rows: fixed metadata column + flexible text column. */
+.news-grid{
+  gap:44px;
+}
+.news-item{
+  display:grid;
+  grid-template-columns:max-content minmax(0,1fr);
+  gap:16px;
+  align-items:start;
+}
+.news-item p{
+  min-width:0;
+  font-size:14.3px;
+  line-height:1.68;
+}
+.news-list-full{
+  max-width:1000px;
+}
+
+/* Contact and footer copy get enough width and consistent leading. */
+.contact-layout{
+  grid-template-columns:.95fr 1.05fr;
+  gap:48px;
+}
+.contact-row > div:last-child{
+  min-width:0;
+}
+.contact-row span{
+  line-height:1.65;
+}
+.foot-grid{
+  grid-template-columns:1.6fr .85fr .85fr 1fr;
+  gap:40px;
+}
+.foot-grid p,
+.foot-grid li{
+  line-height:1.65;
+}
+
+@media (max-width:1100px){
+  .hero-inner{gap:36px;}
+  .hero h1{font-size:clamp(32px,4.2vw,44px);}
+  .card-grid.research-3{grid-template-columns:1fr 1fr;}
+  .prof-layout{grid-template-columns:220px minmax(0,1fr);gap:40px;}
+  .foot-grid{grid-template-columns:1.35fr 1fr 1fr;}
+}
+
+@media (max-width:920px){
+  .wrap{padding-left:26px;padding-right:26px;}
+  .hero-inner,.prof-layout,.contact-layout{grid-template-columns:1fr;}
+  .hero h1{max-width:700px;}
+  .hero p{max-width:680px;}
+  .prof-photo{max-width:260px;}
+  .prof-block{max-width:none;}
+  .card-grid.research-3{grid-template-columns:1fr;}
+  .news-list-full{max-width:none;}
+  .foot-grid{grid-template-columns:1fr 1fr;}
+}
+
+@media (max-width:560px){
+  .wrap{padding-left:20px;padding-right:20px;}
+  .hero h1{font-size:34px;}
+  .hero-stats{gap:22px;}
+  .career-list li{grid-template-columns:1fr;gap:2px;}
+  .news-item{grid-template-columns:1fr;gap:8px;}
+  .tag{width:max-content;}
+  .foot-grid{grid-template-columns:1fr;}
+}
