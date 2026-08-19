@@ -1,0 +1,10 @@
+WBSL 홈페이지 캐시/이미지 적용 수정본
+
+1) 이 폴더의 HTML 7개 + style.css + script.js + data 폴더를 기존 GitHub 저장소에 덮어쓰기 하세요.
+2) assets 폴더의 lab1.jpg, lab2.jpg, lab3.jpg는 현재 GitHub에 있는 파일을 그대로 두면 됩니다.
+3) 이번 버전은 style.css/script.js/data JS와 lab1~3 이미지에 ?v=20260819-5를 붙여 캐시를 강제로 갱신합니다.
+4) style.css는 외부 Unsplash가 아니라 assets/lab1.jpg, lab2.jpg, lab3.jpg를 직접 사용합니다.
+5) 메인 hero와 footer 높이를 이전보다 더 얇게 줄였습니다.
+6) GitHub Pages 반영 후 1~3분 기다린 뒤 Ctrl+F5 또는 Ctrl+Shift+R로 새로고침하세요.
+
+중요: assets 폴더는 삭제하지 마세요.
