@@ -1,4 +1,7 @@
-import { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_CONFIGURED } from './supabase-config.js?v=20260820-admin2';
+const SUPABASE_URL = 'https://ubkcilywcmherkxgxkyq.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_LSsW-k61u9wlXUzDipys3Q_kcvbTRxe';
+const SUPABASE_CONFIGURED = true;
+
 
 const setupPanel = document.getElementById('setup-panel');
 const loginPanel = document.getElementById('login-panel');
