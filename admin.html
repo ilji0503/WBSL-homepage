@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WBSL Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="admin.css?v=20260820-admin1">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar">
+    <a class="admin-brand" href="index.html">
+      <svg viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <path d="M8 4C8 4 14 8 14 17C14 26 8 30 8 30" stroke="#2fd0c0" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M26 4C26 4 20 8 20 17C20 26 26 30 26 30" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span><b>WBSL</b><small>Website Admin</small></span>
+    </a>
+
+    <nav class="admin-nav" id="admin-nav" hidden>
+      <button class="nav-item active" data-tab="publications">Publications</button>
+      <button class="nav-item" data-tab="news">Board / News</button>
+      <button class="nav-item" data-tab="members">Members</button>
+      <button class="nav-item" data-tab="slides">Main Slider</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a href="index.html" class="site-link">← 홈페이지로</a>
+      <button id="logout-btn" class="logout-btn" type="button" hidden>로그아웃</button>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <section id="setup-panel" class="center-panel" hidden>
+      <div class="login-card setup-card">
+        <span class="eyebrow">SETUP REQUIRED</span>
+        <h1>Supabase 연결이 필요합니다</h1>
+        <p><code>supabase-config.js</code>에 Project URL과 Publishable/anon key를 넣은 뒤 다시 접속해 주세요.</p>
+        <div class="setup-path">GitHub 저장소 루트 → <b>supabase-config.js</b></div>
+      </div>
+    </section>
+
+    <section id="login-panel" class="center-panel" hidden>
+      <form id="login-form" class="login-card">
+        <span class="eyebrow">WBSL ADMIN</span>
+        <h1>관리자 로그인</h1>
+        <p>Supabase Authentication에 등록된 관리자 계정으로 로그인합니다.</p>
+        <label>Email<input id="login-email" type="email" autocomplete="username" required placeholder="admin@example.com"></label>
+        <label>Password<input id="login-password" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+        <button class="primary-btn full" type="submit">로그인</button>
+        <p id="login-message" class="form-message"></p>
+      </form>
+    </section>
+
+    <section id="dashboard" hidden>
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">CONTENT MANAGEMENT</span>
+          <h1 id="page-title">Publications</h1>
+        </div>
+        <div class="admin-account">
+          <span id="account-email"></span>
+          <span class="status-dot"></span>
+        </div>
+      </header>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+      <section class="tab-panel active" data-panel="publications">
+        <div class="content-grid">
+          <form id="publication-form" class="editor-card">
+            <div class="card-head"><div><span class="eyebrow">EDITOR</span><h2>논문 추가 / 수정</h2></div><button class="text-btn" type="button" data-reset-form="publication">새 항목</button></div>
+            <input type="hidden" name="id">
+            <div class="field-grid two">
+              <label>Year<input name="year" type="number" min="1900" max="2100" required></label>
+              <label>Order<input name="sort_order" type="number" value="0"></label>
+            </div>
+            <label>Journal<input name="journal" required placeholder="Advanced Science"></label>
+            <label>Title<textarea name="title" rows="3" required placeholder="Paper title"></textarea></label>
+            <label>Authors<textarea name="authors" rows="2" placeholder="A. Author, B. Author, ..."></textarea></label>
+            <label>DOI / URL<input name="url" type="url" placeholder="https://doi.org/..."></label>
+            <button class="primary-btn" type="submit">저장</button>
+          </form>
+          <div class="list-card"><div class="card-head"><div><span class="eyebrow">LIST</span><h2>등록된 논문</h2></div><span id="publication-count" class="count-pill">0</span></div><div id="publication-admin-list" class="admin-list"></div></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="news">
+        <div class="content-grid">
+          <form id="news-form" class="editor-card">
+            <div class="card-head"><div><span class="eyebrow">EDITOR</span><h2>소식 추가 / 수정</h2></div><button class="text-btn" type="button" data-reset-form="news">새 항목</button></div>
+            <input type="hidden" name="id">
+            <div class="field-grid two">
+              <label>Year<input name="year" type="number" min="1900" max="2100" required></label>
+              <label>Order<input name="sort_order" type="number" value="0"></label>
+            </div>
+            <label>Category<input name="category" placeholder="Conference / Award / News" required></label>
+            <label>Title<textarea name="title" rows="3" required></textarea></label>
+            <label>Link<input name="url" type="url" placeholder="https://..."></label>
+            <label>Photo<input name="image_file" type="file" accept="image/*"><small>선택하지 않으면 기존 사진을 유지합니다.</small></label>
+            <input type="hidden" name="image_url">
+            <div id="news-image-preview" class="image-preview empty">사진 미리보기</div>
+            <button class="primary-btn" type="submit">저장</button>
+          </form>
+          <div class="list-card"><div class="card-head"><div><span class="eyebrow">LIST</span><h2>Board / News</h2></div><span id="news-count" class="count-pill">0</span></div><div id="news-admin-list" class="admin-list"></div></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="members">
+        <div class="content-grid">
+          <form id="member-form" class="editor-card">
+            <div class="card-head"><div><span class="eyebrow">EDITOR</span><h2>멤버 추가 / 수정</h2></div><button class="text-btn" type="button" data-reset-form="member">새 항목</button></div>
+            <input type="hidden" name="id">
+            <div class="field-grid two">
+              <label>이름<input name="name" required></label>
+              <label>English Name<input name="english_name"></label>
+            </div>
+            <div class="field-grid two">
+              <label>Group<select name="group_name"><option>Ph.D. / Postdoc</option><option>Ph.D. Students</option><option selected>M.S. Students</option><option>Undergraduate Interns</option><option>Alumni</option></select></label>
+              <label>Order<input name="sort_order" type="number" value="0"></label>
+            </div>
+            <label>Role<input name="role" placeholder="M.S. Student"></label>
+            <label>Research<input name="research" placeholder="Micro-LED · Device Simulation"></label>
+            <label>Email<input name="email" type="email"></label>
+            <label>Photo<input name="photo_file" type="file" accept="image/*"><small>선택하지 않으면 기존 사진을 유지합니다.</small></label>
+            <input type="hidden" name="photo_url">
+            <div id="member-image-preview" class="image-preview empty">사진 미리보기</div>
+            <button class="primary-btn" type="submit">저장</button>
+          </form>
+          <div class="list-card"><div class="card-head"><div><span class="eyebrow">LIST</span><h2>연구실 구성원</h2></div><span id="member-count" class="count-pill">0</span></div><div id="member-admin-list" class="admin-list"></div></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="slides">
+        <div class="content-grid">
+          <form id="slide-form" class="editor-card">
+            <div class="card-head"><div><span class="eyebrow">EDITOR</span><h2>메인 슬라이드 추가 / 수정</h2></div><button class="text-btn" type="button" data-reset-form="slide">새 항목</button></div>
+            <input type="hidden" name="id">
+            <label>Title<input name="title" required placeholder="GaInN/GaN Micro-LED"></label>
+            <label>Subtitle<textarea name="subtitle" rows="2" placeholder="간단한 설명"></textarea></label>
+            <div class="field-grid two">
+              <label>Order<input name="sort_order" type="number" value="0"></label>
+              <label class="checkbox-label"><input name="is_active" type="checkbox" checked>홈에 표시</label>
+            </div>
+            <label>Photo<input name="image_file" type="file" accept="image/*"><small>새 슬라이드는 사진이 필수입니다.</small></label>
+            <input type="hidden" name="image_url">
+            <div id="slide-image-preview" class="image-preview wide empty">사진 미리보기</div>
+            <button class="primary-btn" type="submit">저장</button>
+          </form>
+          <div class="list-card"><div class="card-head"><div><span class="eyebrow">LIST</span><h2>메인 슬라이드</h2></div><span id="slide-count" class="count-pill">0</span></div><div id="slide-admin-list" class="admin-list"></div></div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+<script type="module" src="admin.js?v=20260820-admin1"></script>
+</body>
+</html>
