@@ -1,3 +1,5 @@
+[hidden] { display: none !important; }
+
 :root{
   --navy:#0f1f3d;--indigo:#1e3a6e;--cyan:#2fd0c0;--cyan-dark:#0f9c8c;
   --sky:#eef3fb;--white:#fff;--ink:#0f1f3d;--muted:#66758c;--line:#e2e8f2;
