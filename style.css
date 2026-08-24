@@ -144,7 +144,7 @@ nav{
   position:relative;
   z-index:2;
   display:grid;
-  grid-template-columns:1.02fr .98fr;
+  grid-template-columns:.90fr 1.10fr;
   gap:42px;
   align-items:center;
 }
@@ -508,4 +508,26 @@ a.publication-link:hover,a.publication-title:hover,a.board-title:hover{color:var
   .news-item{grid-template-columns:1fr;gap:8px;}
   .tag{width:max-content;}
   .foot-grid{grid-template-columns:1fr;}
+}
+
+
+/* ===== MEMBER PERIOD + CLEAN LARGE HOME SLIDER (2026-08-24) ===== */
+.hero-slide::before{display:none!important;}
+.hero-slide-copy{display:none!important;}
+.member-period{
+  display:block;
+  margin-top:7px;
+  font-size:11.5px!important;
+  line-height:1.4;
+  color:var(--cyan-dark)!important;
+  font-weight:650;
+}
+@media (min-width:921px){
+  .hero-slider{min-height:460px;}
+}
+@media (max-width:920px){
+  .hero-slider{min-height:370px;}
+}
+@media (max-width:560px){
+  .hero-slider{min-height:290px;}
 }

@@ -2,7 +2,6 @@ const SUPABASE_URL = 'https://ubkcilywcmherkxgxkyq.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_LSsW-k61u9wlXUzDipys3Q_kcvbTRxe';
 const SUPABASE_CONFIGURED = true;
 
-
 const setupPanel = document.getElementById('setup-panel');
 const loginPanel = document.getElementById('login-panel');
 const dashboard = document.getElementById('dashboard');
@@ -36,6 +35,30 @@ function safe(value) {
   return value == null ? '' : String(value);
 }
 
+function monthInputToDate(value) {
+  return value ? `${value}-01` : null;
+}
+
+function dateToMonthInput(value) {
+  return value ? String(value).slice(0, 7) : '';
+}
+
+function formatMonth(value) {
+  if (!value) return '';
+  const raw = String(value).slice(0, 7);
+  const [year, month] = raw.split('-');
+  return year && month ? `${year}.${month}` : raw;
+}
+
+function memberPeriodText(item) {
+  const start = formatMonth(item.start_month);
+  const end = formatMonth(item.end_month);
+  if (!start && !end) return '';
+  if (start && !end) return `${start} – Present`;
+  if (!start && end) return `– ${end}`;
+  return `${start} – ${end}`;
+}
+
 function formValue(form, name) {
   return form.elements[name]?.value?.trim?.() ?? form.elements[name]?.value ?? '';
 }
@@ -57,9 +80,13 @@ function setFormValues(form, values) {
 function resetForm(form) {
   form.reset();
   if (form.elements.id) form.elements.id.value = '';
-  if (form.elements.sort_order) form.elements.sort_order.value = '0';
+  if (form.elements.sort_order) form.elements.sort_order.value = '1';
   if (form.elements.year) form.elements.year.value = String(new Date().getFullYear());
   if (form.id === 'slide-form' && form.elements.is_active) form.elements.is_active.checked = true;
+  if (form.id === 'member-form') {
+    if (form.elements.start_month) form.elements.start_month.value = '';
+    if (form.elements.end_month) form.elements.end_month.value = '';
+  }
 
   const previewMap = {
     'news-form': 'news-image-preview',
@@ -221,7 +248,9 @@ function renderMemberList() {
     const role = document.createElement('span'); role.textContent = safe(item.role);
     meta.append(group, role);
     const title = document.createElement('div'); title.className = 'item-title'; title.textContent = item.name + (item.english_name ? ` · ${item.english_name}` : '');
-    const sub = document.createElement('div'); sub.className = 'item-sub'; sub.textContent = safe(item.research);
+    const sub = document.createElement('div'); sub.className = 'item-sub';
+    const period = memberPeriodText(item);
+    sub.textContent = [safe(item.research), period].filter(Boolean).join(' · ');
     text.append(meta, title, sub); content.appendChild(text); main.appendChild(content);
     const actions = document.createElement('div'); actions.className = 'item-actions';
     actions.append(makeButton('수정', 'edit-member', item.id), makeButton('삭제', 'delete-member', item.id, true));
@@ -247,8 +276,7 @@ function renderSlideList() {
     const active = document.createElement('span'); active.textContent = item.is_active ? '표시 중' : '숨김';
     meta.append(order, active);
     const title = document.createElement('div'); title.className = 'item-title'; title.textContent = item.title;
-    const sub = document.createElement('div'); sub.className = 'item-sub'; sub.textContent = safe(item.subtitle);
-    text.append(meta, title, sub); content.append(img, text); main.appendChild(content);
+    text.append(meta, title); content.append(img, text); main.appendChild(content);
     const actions = document.createElement('div'); actions.className = 'item-actions';
     actions.append(makeButton('수정', 'edit-slide', item.id), makeButton('삭제', 'delete-slide', item.id, true));
     row.append(main, actions); list.appendChild(row);
@@ -309,11 +337,15 @@ async function saveMember(form) {
   let photoUrl = formValue(form, 'photo_url');
   const file = form.elements.photo_file.files?.[0];
   if (file) photoUrl = await uploadImage(file, 'members');
+  const startMonth = formValue(form, 'start_month');
+  const endMonth = formValue(form, 'end_month');
+  if (startMonth && endMonth && endMonth < startMonth) throw new Error('종료 연월은 시작 연월보다 빠를 수 없습니다.');
   const payload = {
     name: formValue(form, 'name'), english_name: formValue(form, 'english_name'),
     role: formValue(form, 'role'), group_name: formValue(form, 'group_name'),
     research: formValue(form, 'research'), email: formValue(form, 'email'),
-    photo_url: photoUrl, sort_order: numberValue(form, 'sort_order', 0), updated_at: new Date().toISOString()
+    start_month: monthInputToDate(startMonth), end_month: monthInputToDate(endMonth),
+    photo_url: photoUrl, sort_order: Math.max(1, numberValue(form, 'sort_order', 1)), updated_at: new Date().toISOString()
   };
   const query = id ? supabase.from('members').update(payload).eq('id', id) : supabase.from('members').insert(payload);
   const { error } = await query;
@@ -327,8 +359,8 @@ async function saveSlide(form) {
   if (file) imageUrl = await uploadImage(file, 'slides');
   if (!imageUrl) throw new Error('슬라이드 사진을 선택해 주세요.');
   const payload = {
-    title: formValue(form, 'title'), subtitle: formValue(form, 'subtitle'), image_url: imageUrl,
-    sort_order: numberValue(form, 'sort_order', 0), is_active: form.elements.is_active.checked,
+    title: formValue(form, 'title'), subtitle: '', image_url: imageUrl,
+    sort_order: Math.max(1, numberValue(form, 'sort_order', 1)), is_active: form.elements.is_active.checked,
     updated_at: new Date().toISOString()
   };
   const query = id ? supabase.from('slides').update(payload).eq('id', id) : supabase.from('slides').insert(payload);
@@ -369,7 +401,13 @@ function editNews(id) {
 function editMember(id) {
   const item = state.members.find((x) => String(x.id) === String(id)); if (!item) return;
   const form = document.getElementById('member-form');
-  setFormValues(form, item); renderPreview(document.getElementById('member-image-preview'), item.photo_url); form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const values = {
+    ...item,
+    start_month: dateToMonthInput(item.start_month),
+    end_month: dateToMonthInput(item.end_month),
+    sort_order: item.sort_order || 1
+  };
+  setFormValues(form, values); renderPreview(document.getElementById('member-image-preview'), item.photo_url); form.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 function editSlide(id) {
   const item = state.slides.find((x) => String(x.id) === String(id)); if (!item) return;

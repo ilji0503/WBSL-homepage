@@ -14,7 +14,7 @@ let wbslSupabase = null;
 
 async function initSupabase() {
   try {
-    const config = await import('./supabase-config.js?v=20260820-admin1');
+    const config = await import('./supabase-config.js?v=20260824-member1');
     if (!config.SUPABASE_CONFIGURED) return null;
 
     const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
@@ -119,25 +119,7 @@ function renderDynamicSlides(slides) {
     const slide = document.createElement('div');
     slide.className = `hero-slide${index === 0 ? ' active' : ''}`;
     slide.style.backgroundImage = `url("${safeText(item.image_url).replace(/"/g, '%22')}")`;
-
-    const copy = document.createElement('div');
-    copy.className = 'hero-slide-copy';
-
-    const kicker = document.createElement('span');
-    kicker.className = 'slide-kicker';
-    kicker.textContent = 'Research Highlight';
-
-    const title = document.createElement('h3');
-    title.textContent = safeText(item.title);
-
-    copy.append(kicker, title);
-    if (item.subtitle) {
-      const subtitle = document.createElement('p');
-      subtitle.textContent = safeText(item.subtitle);
-      copy.appendChild(subtitle);
-    }
-
-    slide.appendChild(copy);
+    slide.setAttribute('aria-label', safeText(item.title) || `WBSL slide ${index + 1}`);
     heroSlider.appendChild(slide);
   });
 
@@ -320,6 +302,22 @@ function renderBoardPage(news) {
   });
 }
 
+function formatMemberMonth(value) {
+  if (!value) return '';
+  const raw = String(value).slice(0, 7);
+  const [year, month] = raw.split('-');
+  return year && month ? `${year}.${month}` : raw;
+}
+
+function memberPeriodText(member) {
+  const start = formatMemberMonth(member.start_month);
+  const end = formatMemberMonth(member.end_month);
+  if (!start && !end) return '';
+  if (start && !end) return `${start} – Present`;
+  if (!start && end) return `– ${end}`;
+  return `${start} – ${end}`;
+}
+
 function memberAvatar(member) {
   const avatar = document.createElement('div');
   avatar.className = 'p-avatar';
@@ -399,6 +397,14 @@ function renderPeoplePage(members) {
       const role = document.createElement('span');
       role.textContent = [member.role, member.research].filter(Boolean).join(' · ');
       card.appendChild(role);
+
+      const periodText = memberPeriodText(member);
+      if (periodText) {
+        const period = document.createElement('span');
+        period.className = 'member-period';
+        period.textContent = periodText;
+        card.appendChild(period);
+      }
 
       if (member.email) {
         const email = document.createElement('a');
