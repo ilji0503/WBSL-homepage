@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=20260824-admin-top1">
+<link rel="stylesheet" href="style.css?v=20260824-home2">
 </head>
 <body>
 <header>
@@ -50,11 +50,6 @@
       <div class="hero-actions">
         <a href="research.html" class="btn btn-primary">Explore Research</a>
         <a href="contact.html" class="btn btn-ghost">Join the Lab</a>
-      </div>
-      <div class="hero-stats">
-        <div><b>8+</b><span>Publications · 2024–26</span></div>
-        <div><b>15</b><span>Lab Members</span></div>
-        <div><b>3</b><span>Core Research Fields</span></div>
       </div>
     </div>
 
@@ -100,23 +95,18 @@
 </section>
 
 <section class="alt">
-  <div class="wrap about">
-    <div class="hex-cluster">
-      <div class="hex hex-a"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M9 3H5a2 2 0 00-2 2v4M15 3h4a2 2 0 012 2v4M9 21H5a2 2 0 01-2-2v-4M15 21h4a2 2 0 002-2v-4"/></svg></div>
-      <div class="hex hex-b"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M6 8.4V14M18 8.4V14M8.4 6H15.6M9 16.2l2-2M15 16.2l-2-2"/></svg></div>
-      <div class="hex hex-c"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M9 2v6l-5 9a2 2 0 002 3h12a2 2 0 002-3l-5-9V2M9 2h6M8 15h8"/></svg></div>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Updates</span>
+      <h2>연구실 소식과 논문</h2>
     </div>
-    <div class="about-copy">
-      <span class="eyebrow">Welcome to WBSL</span>
-      <h2>국립부경대학교 Wide-bandgap Semiconductor Lab.</h2>
-      <p>WBSL은 III-nitride 및 SiC 기반 소자의 모델링, 광전자 소자와 와이드밴드갭 반도체 특성 평가를 수행합니다. 서로 다른 물리 현상을 함께 해석하여 소자의 성능과 신뢰성을 이해하는 것을 목표로 합니다.</p>
-      <ul class="check-list">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>3-D equivalent circuit</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>GaInN/GaN micro-LED</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Electro-thermal analysis</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Reliability & defect analysis</li>
-      </ul>
-      <a href="professor.html" class="btn btn-outline">교수 소개 보기</a>
+    <div class="news-grid">
+      <div class="news-col"><h3>Latest News</h3><div id="home-news-list"></div></div>
+      <div class="news-col"><h3>Recent Publications</h3><div id="home-publication-list"></div></div>
+    </div>
+    <div class="section-foot update-actions">
+      <a href="board.html" class="btn btn-outline">소식 전체 보기</a>
+      <a href="publication.html" class="btn btn-outline">논문 전체 보기</a>
     </div>
   </div>
 </section>
@@ -133,23 +123,7 @@
   </div>
 </section>
 
-<section class="alt">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Updates</span>
-      <h2>최근 연구실 소식과 논문</h2>
-      <p>Board와 Publication의 최신 항목을 한 곳에서 보여줍니다. 데이터 파일을 수정하면 이 영역도 자동으로 함께 갱신됩니다.</p>
-    </div>
-    <div class="news-grid">
-      <div class="news-col"><h3>Latest News</h3><div id="home-news-list"></div></div>
-      <div class="news-col"><h3>Recent Publications</h3><div id="home-publication-list"></div></div>
-    </div>
-    <div class="section-foot update-actions">
-      <a href="board.html" class="btn btn-outline">소식 전체 보기</a>
-      <a href="publication.html" class="btn btn-outline">논문 전체 보기</a>
-    </div>
-  </div>
-</section>
+
 
 <footer>
   <div class="wrap">
