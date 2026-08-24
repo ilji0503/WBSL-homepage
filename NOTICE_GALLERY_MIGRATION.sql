@@ -28,3 +28,36 @@ set category = case
   else category
 end
 where category is not null;
+
+
+-- ------------------------------------------------------------
+-- 사진 업로드 Storage 확인/보강 (여러 번 실행해도 안전)
+-- ------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('wbsl-images', 'wbsl-images', true)
+on conflict (id) do update set public = true;
+
+drop policy if exists "wbsl_images_public_read" on storage.objects;
+create policy "wbsl_images_public_read"
+on storage.objects for select
+to anon, authenticated
+using (bucket_id = 'wbsl-images');
+
+drop policy if exists "wbsl_images_admin_insert" on storage.objects;
+create policy "wbsl_images_admin_insert"
+on storage.objects for insert
+to authenticated
+with check (bucket_id = 'wbsl-images' and public.is_wbsl_admin());
+
+drop policy if exists "wbsl_images_admin_update" on storage.objects;
+create policy "wbsl_images_admin_update"
+on storage.objects for update
+to authenticated
+using (bucket_id = 'wbsl-images' and public.is_wbsl_admin())
+with check (bucket_id = 'wbsl-images' and public.is_wbsl_admin());
+
+drop policy if exists "wbsl_images_admin_delete" on storage.objects;
+create policy "wbsl_images_admin_delete"
+on storage.objects for delete
+to authenticated
+using (bucket_id = 'wbsl-images' and public.is_wbsl_admin());

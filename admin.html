@@ -7,10 +7,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="admin.css?v=20260824-gallery1">
+<link rel="stylesheet" href="admin.css?v=20260824-gallery-crop2">
 <style>
   .admin-logo-img{width:46px;height:46px;object-fit:contain;border-radius:9px;background:#fff;flex:0 0 auto}
   .news-date-note{font-size:11px;color:#8793a6;font-weight:500}
+
+  /* ===== IMAGE CROPPER ===== */
+  .crop-modal[hidden]{display:none!important}
+  .crop-modal{position:fixed;inset:0;z-index:1000;background:rgba(6,17,35,.72);display:grid;place-items:center;padding:20px}
+  .crop-dialog{width:min(760px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 28px 80px rgba(0,0,0,.28);padding:24px}
+  .crop-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}
+  .crop-head h2{margin:0;font-size:21px}.crop-head p{margin:5px 0 0;color:#748197;font-size:12.5px}
+  .crop-close{border:0;background:#eef3fb;color:#0f1f3d;width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:20px;line-height:1}
+  .crop-stage-wrap{display:grid;place-items:center;background:#0a1730;border-radius:14px;overflow:hidden;min-height:280px;padding:14px;touch-action:none}
+  .crop-stage{display:block;max-width:100%;height:auto;cursor:grab;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+  .crop-stage.dragging{cursor:grabbing}
+  .crop-controls{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center;margin-top:18px}
+  .crop-controls label{font-size:12.5px;font-weight:750;color:#52637b}.crop-controls input[type="range"]{width:100%}
+  .crop-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+  .crop-actions button{border-radius:10px;padding:10px 16px;font-weight:800;cursor:pointer}
+  .crop-cancel{border:1px solid #d8dfeb;background:#fff;color:#52637b}.crop-apply{border:0;background:#0f1f3d;color:#fff}
+  .crop-ratio-pill{display:inline-flex;margin-top:8px;padding:5px 8px;border-radius:999px;background:#eef3fb;color:#0f1f3d;font-size:11px;font-weight:800}
+  @media(max-width:560px){.crop-dialog{padding:17px}.crop-stage-wrap{min-height:220px;padding:8px}}
+
 </style>
 </head>
 <body>
@@ -172,6 +191,31 @@
   </main>
 </div>
 
+
+<div id="crop-modal" class="crop-modal" hidden aria-modal="true" role="dialog" aria-labelledby="crop-title">
+  <div class="crop-dialog">
+    <div class="crop-head">
+      <div>
+        <h2 id="crop-title">사진 자르기</h2>
+        <p>사진을 드래그해서 위치를 조절하고 확대/축소한 뒤 적용하세요.</p>
+        <span id="crop-ratio-label" class="crop-ratio-pill"></span>
+      </div>
+      <button id="crop-close" class="crop-close" type="button" aria-label="닫기">×</button>
+    </div>
+    <div id="crop-stage-wrap" class="crop-stage-wrap">
+      <canvas id="crop-stage" class="crop-stage"></canvas>
+    </div>
+    <div class="crop-controls">
+      <label for="crop-zoom">확대/축소</label>
+      <input id="crop-zoom" type="range" min="1" max="3" step="0.01" value="1">
+    </div>
+    <div class="crop-actions">
+      <button id="crop-cancel" class="crop-cancel" type="button">취소</button>
+      <button id="crop-apply" class="crop-apply" type="button">자르기 적용</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
   // Board/Gallery 확장: 날짜·기간·설명 필드를 기존 admin.js와 함께 사용합니다.
   const form = document.getElementById('news-form');
@@ -317,6 +361,123 @@
     });
   });
 </script>
-<script type="module" src="admin.js?v=20260824-member1"></script>
+
+<script>
+(() => {
+  const modal = document.getElementById('crop-modal');
+  const canvas = document.getElementById('crop-stage');
+  const ctx = canvas.getContext('2d');
+  const zoomInput = document.getElementById('crop-zoom');
+  const ratioLabel = document.getElementById('crop-ratio-label');
+  const applyBtn = document.getElementById('crop-apply');
+  const cancelBtn = document.getElementById('crop-cancel');
+  const closeBtn = document.getElementById('crop-close');
+  const stageWrap = document.getElementById('crop-stage-wrap');
+
+  const cropConfigs = [
+    { selector:'#news-form input[name="image_file"]', label:'Board / Gallery · 4:3', ratio:4/3, canvasW:720, canvasH:540, outW:1600, outH:1200 },
+    { selector:'#member-form input[name="photo_file"]', label:'Member · 1:1', ratio:1, canvasW:620, canvasH:620, outW:900, outH:900 },
+    { selector:'#slide-form input[name="image_file"]', label:'Main Slider · 16:9', ratio:16/9, canvasW:800, canvasH:450, outW:1920, outH:1080 }
+  ];
+
+  let state = null;
+  let drag = null;
+
+  const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
+
+  function geometry() {
+    if (!state?.img) return null;
+    const base = Math.max(canvas.width/state.img.naturalWidth, canvas.height/state.img.naturalHeight);
+    const scale = base * state.zoom;
+    const dw = state.img.naturalWidth * scale;
+    const dh = state.img.naturalHeight * scale;
+    const maxX = Math.max(0,(dw-canvas.width)/2);
+    const maxY = Math.max(0,(dh-canvas.height)/2);
+    state.offsetX = clamp(state.offsetX,-maxX,maxX);
+    state.offsetY = clamp(state.offsetY,-maxY,maxY);
+    return {dw,dh,x:(canvas.width-dw)/2+state.offsetX,y:(canvas.height-dh)/2+state.offsetY};
+  }
+
+  function draw() {
+    const g = geometry();
+    if (!g) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(state.img,g.x,g.y,g.dw,g.dh);
+  }
+
+  function close(clearInput=false) {
+    if (!state) { modal.hidden=true; return; }
+    if (clearInput && state.input) state.input.value='';
+    if (state.objectUrl) URL.revokeObjectURL(state.objectUrl);
+    state=null; drag=null; modal.hidden=true;
+  }
+
+  function openCrop(input,file,cfg) {
+    const objectUrl=URL.createObjectURL(file);
+    const img=new Image();
+    state={input,file,cfg,img,objectUrl,zoom:1,offsetX:0,offsetY:0};
+    canvas.width=cfg.canvasW; canvas.height=cfg.canvasH;
+    zoomInput.value='1'; ratioLabel.textContent=cfg.label;
+    modal.hidden=false;
+    img.onload=draw;
+    img.onerror=()=>{ alert('사진을 불러오지 못했습니다.'); close(true); };
+    img.src=objectUrl;
+  }
+
+  cropConfigs.forEach(cfg => {
+    const input=document.querySelector(cfg.selector);
+    if (!input) return;
+    input.addEventListener('change', (event) => {
+      if (input.dataset.croppedReady === '1') {
+        delete input.dataset.croppedReady;
+        return;
+      }
+      const file=input.files?.[0];
+      if (!file) return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      openCrop(input,file,cfg);
+    }, true);
+  });
+
+  zoomInput.addEventListener('input',()=>{ if(!state)return; state.zoom=Number(zoomInput.value); draw(); });
+
+  function point(ev){ const r=canvas.getBoundingClientRect(); return {x:(ev.clientX-r.left)*(canvas.width/r.width),y:(ev.clientY-r.top)*(canvas.height/r.height)}; }
+  canvas.addEventListener('pointerdown',(ev)=>{ if(!state)return; canvas.setPointerCapture(ev.pointerId); const p=point(ev); drag={x:p.x,y:p.y,ox:state.offsetX,oy:state.offsetY}; canvas.classList.add('dragging'); });
+  canvas.addEventListener('pointermove',(ev)=>{ if(!drag||!state)return; const p=point(ev); state.offsetX=drag.ox+(p.x-drag.x); state.offsetY=drag.oy+(p.y-drag.y); draw(); });
+  const endDrag=()=>{drag=null;canvas.classList.remove('dragging')};
+  canvas.addEventListener('pointerup',endDrag); canvas.addEventListener('pointercancel',endDrag);
+
+  applyBtn.addEventListener('click',()=>{
+    if(!state?.img)return;
+    const g=geometry();
+    const out=document.createElement('canvas'); out.width=state.cfg.outW; out.height=state.cfg.outH;
+    const o=out.getContext('2d'); const f=out.width/canvas.width;
+    o.fillStyle='#fff'; o.fillRect(0,0,out.width,out.height);
+    o.drawImage(state.img,g.x*f,g.y*f,g.dw*f,g.dh*f);
+    applyBtn.disabled=true; applyBtn.textContent='적용 중...';
+    out.toBlob((blob)=>{
+      applyBtn.disabled=false; applyBtn.textContent='자르기 적용';
+      if(!blob||!state)return;
+      const input=state.input;
+      const base=(state.file.name.replace(/\.[^.]+$/,'')||'image').replace(/[^a-zA-Z0-9가-힣_-]/g,'_');
+      const cropped=new File([blob],`${base}-cropped.jpg`,{type:'image/jpeg',lastModified:Date.now()});
+      const dt=new DataTransfer(); dt.items.add(cropped);
+      input.files=dt.files; input.dataset.croppedReady='1';
+      close(false);
+      input.dispatchEvent(new Event('change',{bubbles:true}));
+    },'image/jpeg',0.9);
+  });
+
+  cancelBtn.addEventListener('click',()=>close(true));
+  closeBtn.addEventListener('click',()=>close(true));
+  modal.addEventListener('click',(ev)=>{ if(ev.target===modal)close(true); });
+  document.addEventListener('keydown',(ev)=>{ if(ev.key==='Escape'&&!modal.hidden)close(true); });
+})();
+</script>
+
+<script type="module" src="admin.js?v=20260824-gallery-crop2"></script>
 </body>
 </html>
