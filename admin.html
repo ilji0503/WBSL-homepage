@@ -7,9 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="admin.css?v=20260827-lab1">
+<link rel="stylesheet" href="admin.css?v=20260827-logo12">
 <style>
-  .admin-logo-img{width:46px;height:46px;object-fit:contain;border-radius:9px;background:#fff;flex:0 0 auto}
+  .admin-logo-img{width:46px;height:46px;object-fit:contain;border-radius:0;background:transparent;padding:0;flex:0 0 auto}
   .news-date-note{font-size:11px;color:#8793a6;font-weight:500}
 
   /* ===== IMAGE CROPPER ===== */
@@ -36,7 +36,7 @@
 <div class="admin-shell">
   <aside class="sidebar">
     <a class="admin-brand" href="index.html">
-      <img src="assets/wbsl-logo.png" alt="WBSL Logo" class="admin-logo-img">
+      <img src="assets/wbsl_logo2.png" alt="WBSL Logo" class="admin-logo-img">
       <span><b>WBSL</b><small>Website Admin</small></span>
     </a>
 
@@ -136,7 +136,7 @@
             <label>Title<textarea name="title" rows="2" required placeholder="예: 한국광전자공학회 우수발표상 수상"></textarea></label>
             <label>내용 / 설명<textarea name="description" rows="3" placeholder="카드 아래에 짧게 표시할 설명"></textarea></label>
             <label>Link<input name="url" type="url" placeholder="https://..."></label>
-            <label>Photo<input name="image_file" type="file" accept="image/*"><small>선택하지 않으면 기존 사진을 유지합니다.</small></label>
+            <label>Photo<input name="image_file" type="file" accept="image/*"><small>포스터는 원본 비율 그대로 저장됩니다. 선택하지 않으면 기존 사진을 유지합니다.</small></label>
             <input type="hidden" name="image_url">
             <div id="news-image-preview" class="image-preview empty">사진 미리보기</div>
             <button class="primary-btn" type="submit">저장</button>
@@ -454,7 +454,6 @@
   const stageWrap = document.getElementById('crop-stage-wrap');
 
   const cropConfigs = [
-    { selector:'#news-form input[name="image_file"]', label:'Board / Gallery · 4:3', ratio:4/3, canvasW:720, canvasH:540, outW:1600, outH:1200 },
     { selector:'#member-form input[name="photo_file"]', label:'Member · 1:1', ratio:1, canvasW:620, canvasH:620, outW:900, outH:900 },
     { selector:'#slide-form input[name="image_file"]', label:'Main Slider · 16:9', ratio:16/9, canvasW:800, canvasH:450, outW:1920, outH:1080 }
   ];

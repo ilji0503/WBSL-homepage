@@ -1,11 +1,11 @@
 /*
   WBSL global branding patch — 2026-08-24
   Keeps the current site design exactly as deployed at the pinned commit,
-  then replaces every public-page header/footer logo with assets/wbsl-logo.png.
+  uses wbsl_logo1 on light backgrounds and wbsl_logo2 on dark backgrounds.
 */
 @import url('https://cdn.jsdelivr.net/gh/ilji0503/WBSL-homepage@763c8f98161f2b92949214e45ee3d32af4d6dc49/style.css');
 
-/* ===== NEW WBSL LOGO: ALL PUBLIC PAGE HEADERS ===== */
+/* ===== WBSL LOGO: LIGHT HEADER ===== */
 .logo > .logo-mark,
 .logo > .logo-img{
   display:none !important;
@@ -16,11 +16,10 @@
   width:52px;
   height:52px;
   flex:0 0 52px;
-  border-radius:9px;
-  background:#fff url('assets/wbsl-logo.png?v=20260824-logo-global2') center/contain no-repeat;
+  background:transparent url('assets/wbsl_logo1.png?v=20260827-logo12') center/contain no-repeat;
 }
 
-/* ===== NEW WBSL LOGO: ALL PUBLIC PAGE FOOTERS ===== */
+/* ===== WBSL LOGO: DARK FOOTER ===== */
 .foot-logo > svg,
 .foot-logo > img{
   display:none !important;
@@ -31,8 +30,7 @@
   width:34px;
   height:34px;
   flex:0 0 34px;
-  border-radius:7px;
-  background:#fff url('assets/wbsl-logo.png?v=20260824-logo-global2') center/contain no-repeat;
+  background:transparent url('assets/wbsl_logo2.png?v=20260827-logo12') center/contain no-repeat;
 }
 
 @media(max-width:560px){
@@ -295,4 +293,29 @@ a.home-publication-en:hover{
     gap:10px!important;
     padding:18px 0 22px!important;
   }
+}
+
+/* ===== BOARD POSTER FULL VIEW ===== */
+.activity-photo{background:#f7f9fc!important}
+.activity-photo img{object-fit:contain!important}
+
+
+/* ===== LOGO BACKGROUND CLEANUP ===== */
+.logo::before,
+.foot-logo::before{
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.logo::before{
+  background-color:transparent!important;
+  background-image:url('assets/wbsl_logo1.png?v=20260827-logo12')!important;
+}
+.foot-logo::before{
+  background-color:transparent!important;
+  background-image:url('assets/wbsl_logo2.png?v=20260827-logo12')!important;
+}
+.footer-logo-img,
+.logo-img{
+  background:transparent!important;
+  border-radius:0!important;
 }

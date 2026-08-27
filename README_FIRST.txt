@@ -1,15 +1,34 @@
-WBSL Publication 넓은 레이아웃 수정본
+WBSL 로고 밝은/어두운 배경 분리 적용
 
-변경 사항
-- Publication 목록 폭 제한(980px) 제거
-- 화면의 가용 폭을 더 넓게 사용
-- 긴 영문/한글 제목이 불필요하게 일찍 줄바꿈되는 현상 개선
-- 연도(2025 등) 아래의 진한 가로선 제거
-- 각 논문 항목 아래의 회색 구분선 제거
-- '연도별 논문 목록입니다...' 회색 설명 문구 제거 유지
-- 기존 발행일/영문 제목/한글 제목 기능 유지
-- Board 드롭다운 / Lab Meeting 등 이전 통합 기능 유지
+사용 파일명
+- assets/wbsl_logo1.png : 컬러 + 투명 배경
+- assets/wbsl_logo2.png : 전체 흰색 + 투명 배경
 
-적용:
-GitHub 저장소에 ZIP 내부 파일을 같은 이름으로 덮어쓰기 후 Commit.
-이번 수정은 DB 구조를 바꾸지 않으므로 새 Supabase SQL 실행은 필요 없습니다.
+적용 위치
+- 밝은 상단 Header -> wbsl_logo1.png
+- 어두운 Footer -> wbsl_logo2.png
+- 어두운 Admin Sidebar -> wbsl_logo2.png
+- Board의 사진 없는 placeholder -> wbsl_logo1.png
+
+중요
+현재 GitHub assets 폴더에는 wbsl_logo1.png / wbsl_logo2.png가 아직 없습니다.
+두 PNG 파일을 반드시 assets 폴더에 정확히 이 이름으로 업로드하세요.
+
+GitHub에 덮어쓰기
+- style.css
+- admin.html
+- index.html
+- professor.html
+- research.html
+- publication.html
+- people.html
+- board.html
+- board-detail.html
+- contact.html
+- labmeeting.html
+
+그리고 assets 폴더에:
+- wbsl_logo1.png
+- wbsl_logo2.png
+
+Supabase SQL은 필요 없습니다.

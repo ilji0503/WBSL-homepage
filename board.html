@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=20260827-pubwide1">
+<link rel="stylesheet" href="style.css?v=20260827-logo12">
 <style>
   .gallery-page{padding-top:58px}
   .gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}
@@ -23,12 +23,12 @@
   .gallery-search input{width:100%;height:40px;border:1px solid #d9e1ec;border-radius:10px;padding:0 12px;font:inherit;outline:none}
   .gallery-search input:focus{border-color:var(--cyan-dark);box-shadow:0 0 0 3px rgba(47,208,192,.10)}
   .gallery-search button{height:40px;border:0;border-radius:10px;background:var(--navy);color:#fff;padding:0 16px;font-weight:800;cursor:pointer}
-  .activity-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+  .activity-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
   .activity-card{min-width:0;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 14px 30px -25px rgba(15,31,61,.42);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
   .activity-card:hover{transform:translateY(-4px);border-color:#c9d4e3;box-shadow:0 22px 40px -27px rgba(15,31,61,.48)}
   .activity-card-link{display:block;height:100%}
-  .activity-photo{aspect-ratio:4/3;background:#eef3fb;overflow:hidden;position:relative}
-  .activity-photo img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+  .activity-photo{aspect-ratio:3/4;background:#f7f9fc;overflow:hidden;position:relative;display:grid;place-items:center}
+  .activity-photo img{width:100%;height:100%;object-fit:contain;transition:transform .3s ease}
   .activity-card:hover .activity-photo img{transform:scale(1.025)}
   .activity-photo.placeholder{display:grid;place-items:center;background:linear-gradient(145deg,#f6f9fd,#eaf0f8)}
   .activity-photo.placeholder img{width:92px;height:92px;object-fit:contain;opacity:.58;transform:none!important}
@@ -42,8 +42,8 @@
   .activity-date{display:flex;align-items:center;gap:7px;margin-top:13px;color:#728097;font-size:12.5px;font-weight:600}
   .activity-date svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8}
   .gallery-empty{grid-column:1/-1;padding:72px 20px;text-align:center;color:#8693a7;border:1px dashed #d7dfeb;border-radius:18px;background:#fafbfd}
-  @media(max-width:1120px){.activity-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
-  @media(max-width:820px){.gallery-toolbar{align-items:stretch;flex-direction:column}.gallery-search{min-width:0;width:100%}.activity-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:1120px){.activity-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:820px){.gallery-toolbar{align-items:stretch;flex-direction:column}.gallery-search{min-width:0;width:100%}.activity-gallery{grid-template-columns:1fr}}
   @media(max-width:560px){.gallery-page{padding-top:42px}.activity-gallery{grid-template-columns:1fr}.gallery-tab{padding:8px 12px}.activity-title{min-height:0}}
 </style>
 </head>
@@ -51,7 +51,7 @@
 <header>
   <div class="wrap">
     <nav>
-      <a href="index.html" class="logo"><img src="assets/wbsl-logo.png" alt="WBSL Logo" class="logo-img"><span class="logo-text">WBSL<span>Wide Bandgap Semiconductor Laboratory</span></span>
+      <a href="index.html" class="logo"><img src="assets/wbsl_logo1.png" alt="WBSL Logo" class="logo-img"><span class="logo-text">WBSL<span>Wide Bandgap Semiconductor Laboratory</span></span>
       </a>
       <ul class="nav-links">
         <li><a href="professor.html">Professor</a></li>
@@ -106,7 +106,7 @@
 <footer>
   <div class="wrap">
     <div class="foot-grid">
-      <div><div class="foot-logo"><img src="assets/wbsl-logo.png" alt="WBSL Logo" class="footer-logo-img"><b>WBSL</b></div><p style="font-size:13.5px; line-height:1.7;">국립부경대학교 전기공학부 디스플레이반도체공학전공<br>부산광역시 남구 용소로 45, 가온관(B21)</p></div>
+      <div><div class="foot-logo"><img src="assets/wbsl_logo2.png" alt="WBSL Logo" class="footer-logo-img"><b>WBSL</b></div><p style="font-size:13.5px; line-height:1.7;">국립부경대학교 전기공학부 디스플레이반도체공학전공<br>부산광역시 남구 용소로 45, 가온관(B21)</p></div>
       <div><h4>Sitemap</h4><ul><li><a href="professor.html">Professor</a></li><li><a href="research.html">Research</a></li><li><a href="publication.html">Publication</a></li><li><a href="people.html">People</a></li></ul></div>
       <div><h4>Lab</h4><ul><li><a href="board.html">Board</a></li><li><a href="labmeeting.html">Lab Meeting</a></li><li><a href="contact.html">Contact us</a></li></ul></div>
       <div><h4>Contact</h4><ul><li><a href="mailto:han@pknu.ac.kr">han@pknu.ac.kr</a></li><li><a href="tel:+82516296409">+82-51-629-6409</a></li></ul></div>
@@ -197,18 +197,23 @@
       const card = document.createElement('article');
       card.className = 'activity-card';
 
-      const clickable = item.url ? document.createElement('a') : document.createElement('div');
+      const clickable = document.createElement('a');
       clickable.className = 'activity-card-link';
-      if (item.url) {
+      if (item.id) {
+        clickable.href = `board-detail.html?id=${encodeURIComponent(item.id)}`;
+      } else if (item.url) {
         clickable.href = item.url;
         clickable.target = '_blank';
         clickable.rel = 'noopener';
+      } else {
+        clickable.href = '#';
+        clickable.addEventListener('click', (event) => event.preventDefault());
       }
 
       const photo = document.createElement('div');
       photo.className = item.image_url || item.image ? 'activity-photo' : 'activity-photo placeholder';
       const img = document.createElement('img');
-      img.src = item.image_url || item.image || 'assets/wbsl-logo.png';
+      img.src = item.image_url || item.image || 'assets/wbsl_logo1.png';
       img.alt = item.image_url || item.image ? safe(item.title) : 'WBSL';
       img.loading = 'lazy';
       photo.appendChild(img);
