@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=20260827-lab1">
+<link rel="stylesheet" href="style.css?v=20260827-pubwide1">
 <style>
   .labmeeting-page{padding-top:58px}
   .archive-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}
@@ -92,17 +92,15 @@
 <header>
   <div class="wrap">
     <nav>
-      <a href="index.html" class="logo">
-        <img src="assets/wbsl-logo.png" alt="WBSL Logo" class="logo-img">
-        <span class="logo-text">WBSL<span>Wide Bandgap Semiconductor Laboratory</span></span>
+      <a href="index.html" class="logo"><img src="assets/wbsl-logo.png" alt="WBSL Logo" class="logo-img"><span class="logo-text">WBSL<span>Wide Bandgap Semiconductor Laboratory</span></span>
       </a>
       <ul class="nav-links">
         <li><a href="professor.html">Professor</a></li>
         <li><a href="research.html">Research</a></li>
         <li><a href="publication.html">Publication</a></li>
         <li><a href="people.html">People</a></li>
-        <li><a href="board.html">Board</a></li>
-        <li><a href="labmeeting.html" class="active">Lab Meeting</a></li>
+        <li class="nav-board-group"><a href="board.html" class="nav-board-link active">Board <span class="nav-board-caret" aria-hidden="true">▾</span></a><ul class="nav-dropdown-menu"><li><a href="board.html">Lab Activities</a></li><li><a href="labmeeting.html" class="active">Lab Meeting</a></li></ul></li>
+        
       </ul>
       <div class="nav-cta">
         <a href="contact.html" class="btn btn-outline">Contact us</a>

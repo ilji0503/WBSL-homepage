@@ -181,20 +181,52 @@ function renderPublicationList() {
   const list = document.getElementById('publication-admin-list');
   const count = document.getElementById('publication-count');
   list.innerHTML = '';
-  count.textContent = String(state.publications.length);
-  if (!state.publications.length) return list.appendChild(emptyNode());
 
-  state.publications.forEach((item) => {
+  const sorted = [...state.publications].sort((a, b) => {
+    const ad = a.publish_date ? String(a.publish_date) : `${a.year || 0}-00-00`;
+    const bd = b.publish_date ? String(b.publish_date) : `${b.year || 0}-00-00`;
+    return bd.localeCompare(ad)
+      || ((a.sort_order || 1) - (b.sort_order || 1))
+      || ((b.id || 0) - (a.id || 0));
+  });
+
+  count.textContent = String(sorted.length);
+  if (!sorted.length) return list.appendChild(emptyNode());
+
+  sorted.forEach((item) => {
     const row = document.createElement('article');
     row.className = 'list-item';
     const main = document.createElement('div'); main.className = 'item-main';
     const meta = document.createElement('div'); meta.className = 'item-meta';
-    const y = document.createElement('span'); y.className = 'mini-pill'; y.textContent = item.year;
-    const journal = document.createElement('span'); journal.textContent = safe(item.journal);
-    meta.append(y, journal);
-    const title = document.createElement('div'); title.className = 'item-title'; title.textContent = item.title;
-    const sub = document.createElement('div'); sub.className = 'item-sub'; sub.textContent = safe(item.authors);
-    main.append(meta, title, sub);
+
+    const date = document.createElement('span');
+    date.className = 'mini-pill';
+    date.textContent = item.publish_date ? String(item.publish_date).replaceAll('-', '.') : safe(item.year);
+
+    const journal = document.createElement('span');
+    journal.textContent = safe(item.journal);
+    meta.append(date, journal);
+
+    const title = document.createElement('div');
+    title.className = 'item-title';
+    title.textContent = safe(item.title);
+
+    main.append(meta, title);
+
+    if (item.title_ko) {
+      const ko = document.createElement('div');
+      ko.className = 'item-sub';
+      ko.textContent = safe(item.title_ko);
+      main.appendChild(ko);
+    }
+
+    if (item.authors) {
+      const authors = document.createElement('div');
+      authors.className = 'item-sub';
+      authors.textContent = safe(item.authors);
+      main.appendChild(authors);
+    }
+
     const actions = document.createElement('div'); actions.className = 'item-actions';
     actions.append(makeButton('수정', 'edit-publication', item.id), makeButton('삭제', 'delete-publication', item.id, true));
     row.append(main, actions); list.appendChild(row);
@@ -299,15 +331,21 @@ function bindFilePreview(formId, fileFieldName, hiddenFieldName, previewId) {
 
 async function savePublication(form) {
   const id = formValue(form, 'id');
+  const publishDate = formValue(form, 'publish_date');
+  const year = numberValue(form, 'year', publishDate ? Number(publishDate.slice(0, 4)) : new Date().getFullYear());
+
   const payload = {
-    year: numberValue(form, 'year', new Date().getFullYear()),
-    sort_order: numberValue(form, 'sort_order', 0),
+    year,
+    publish_date: publishDate || null,
+    sort_order: Math.max(1, numberValue(form, 'sort_order', 1)),
     journal: formValue(form, 'journal'),
     title: formValue(form, 'title'),
+    title_ko: formValue(form, 'title_ko'),
     authors: formValue(form, 'authors'),
     url: formValue(form, 'url'),
     updated_at: new Date().toISOString()
   };
+
   const query = id ? supabase.from('publications').update(payload).eq('id', id) : supabase.from('publications').insert(payload);
   const { error } = await query;
   if (error) throw error;

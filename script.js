@@ -140,8 +140,20 @@ function renderDynamicSlides(slides) {
 function normalizePublications(rows) {
   return (rows || []).map((item) => ({
     ...item,
-    order: item.sort_order ?? item.order ?? 0
-  })).sort((a, b) => (b.year - a.year) || ((b.order || 0) - (a.order || 0)));
+    order: item.sort_order ?? item.order ?? 1,
+    title_ko: item.title_ko || '',
+    publish_date: item.publish_date || ''
+  })).sort((a, b) => {
+    const ad = a.publish_date || `${a.year || 0}-00-00`;
+    const bd = b.publish_date || `${b.year || 0}-00-00`;
+    return bd.localeCompare(ad)
+      || ((a.order || 1) - (b.order || 1));
+  });
+}
+
+function publicationDateText(item) {
+  if (!item.publish_date) return String(item.year || '');
+  return String(item.publish_date).slice(0, 10).replaceAll('-', '.');
 }
 
 function normalizeNews(rows) {
@@ -192,14 +204,28 @@ function renderHomePublications(publications) {
   publications.slice(0, 3).forEach((item) => {
     const row = document.createElement('div');
     row.className = 'news-item';
-    row.appendChild(createTag(String(item.year)));
+    row.appendChild(createTag(publicationDateText(item)));
 
     const p = document.createElement('p');
-    const journal = document.createElement('i');
-    journal.textContent = safeText(item.journal);
-    p.appendChild(journal);
-    p.appendChild(document.createTextNode(' — '));
-    p.appendChild(createLinkOrText(item.title, item.url, 'publication-link'));
+    p.className = 'home-publication-copy';
+
+    if (item.journal) {
+      const journal = document.createElement('i');
+      journal.className = 'home-publication-journal';
+      journal.textContent = safeText(item.journal);
+      p.appendChild(journal);
+    }
+
+    const en = createLinkOrText(item.title, item.url, 'home-publication-en');
+    p.appendChild(en);
+
+    if (item.title_ko) {
+      const ko = document.createElement('span');
+      ko.className = 'home-publication-ko';
+      ko.textContent = safeText(item.title_ko);
+      p.appendChild(ko);
+    }
+
     row.appendChild(p);
     target.appendChild(row);
   });
@@ -230,15 +256,31 @@ function renderPublicationPage(publications) {
 
     const meta = document.createElement('div');
     meta.className = 'publication-meta';
-    meta.appendChild(createTag(String(item.year)));
-    const journal = document.createElement('span');
-    journal.className = 'publication-journal';
-    journal.textContent = safeText(item.journal);
-    meta.appendChild(journal);
+
+    const date = document.createElement('span');
+    date.className = 'publication-date';
+    date.textContent = publicationDateText(item);
+    meta.appendChild(date);
+
+    if (item.journal) {
+      const journal = document.createElement('span');
+      journal.className = 'publication-journal';
+      journal.textContent = safeText(item.journal);
+      meta.appendChild(journal);
+    }
 
     const body = document.createElement('div');
     body.className = 'publication-body';
-    body.appendChild(createLinkOrText(item.title, item.url, 'publication-title'));
+
+    body.appendChild(createLinkOrText(item.title, item.url, 'publication-title-en'));
+
+    if (item.title_ko) {
+      const ko = document.createElement('div');
+      ko.className = 'publication-title-ko';
+      ko.textContent = safeText(item.title_ko);
+      body.appendChild(ko);
+    }
+
     if (item.authors) {
       const authors = document.createElement('p');
       authors.className = 'publication-authors';

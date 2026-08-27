@@ -96,11 +96,15 @@
             <div class="card-head"><div><span class="eyebrow">EDITOR</span><h2>논문 추가 / 수정</h2></div><button class="text-btn" type="button" data-reset-form="publication">새 항목</button></div>
             <input type="hidden" name="id">
             <div class="field-grid two">
-              <label>Year<input name="year" type="number" min="1900" max="2100" required></label>
-              <label>표시 순서<input name="sort_order" type="number" min="1" value="1"><small>1이 가장 먼저 표시됩니다.</small></label>
+              <label>연도<input name="year" type="number" min="1900" max="2100" required></label>
+              <label>발행일<input name="publish_date" type="date" required></label>
             </div>
-            <label>Journal<input name="journal" required placeholder="Advanced Science"></label>
-            <label>Title<textarea name="title" rows="3" required placeholder="Paper title"></textarea></label>
+            <div class="field-grid two">
+              <label>Journal<input name="journal" required placeholder="Advanced Science"></label>
+              <label>표시 순서<input name="sort_order" type="number" min="1" value="1"></label>
+            </div>
+            <label>영문 제목<textarea name="title" rows="3" required placeholder="Paper title"></textarea></label>
+            <label>한글 제목<textarea name="title_ko" rows="2" placeholder="논문 한글 제목"></textarea></label>
             <label>Authors<textarea name="authors" rows="2" placeholder="A. Author, B. Author, ..."></textarea></label>
             <label>DOI / URL<input name="url" type="url" placeholder="https://doi.org/..."></label>
             <button class="primary-btn" type="submit">저장</button>
@@ -553,7 +557,7 @@
 })();
 </script>
 
-<script type="module" src="admin.js?v=20260824-gallery-crop2"></script>
+<script type="module" src="admin.js?v=20260827-pub1"></script>
 
 <script type="module">
 (() => {
@@ -798,6 +802,19 @@
   });
 
   resetForm();
+})();
+</script>
+
+
+<script>
+(() => {
+  const form = document.getElementById('publication-form');
+  if (!form) return;
+  const date = form.elements.publish_date;
+  const year = form.elements.year;
+  date?.addEventListener('change', () => {
+    if (date.value) year.value = date.value.slice(0, 4);
+  });
 })();
 </script>
 
