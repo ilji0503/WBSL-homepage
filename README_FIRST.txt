@@ -1,34 +1,21 @@
-WBSL 로고 밝은/어두운 배경 분리 적용
+WBSL Contact 시각 개선
 
-사용 파일명
-- assets/wbsl_logo1.png : 컬러 + 투명 배경
-- assets/wbsl_logo2.png : 전체 흰색 + 투명 배경
+변경:
+- Contact 영역에 연한 블루 배경 추가
+- 왼쪽 연락처 카드를 떠 있는 카드 스타일로 변경
+- 상단 청록 포인트 라인
+- 아이콘 배경과 색상 강화
+- Send Email / Call Lab 버튼 추가
+- 지도도 별도 카드화
+- 지도 위에 Location / Gaon Building / Room 902-1 표시
+- 지도 아래 영문 주소 표시
+- Footer의 흰색 wbsl_logo2는 그대로 유지
+- 기존 Publication 균형 레이아웃 등 이전 style.css 수정도 유지
 
-적용 위치
-- 밝은 상단 Header -> wbsl_logo1.png
-- 어두운 Footer -> wbsl_logo2.png
-- 어두운 Admin Sidebar -> wbsl_logo2.png
-- Board의 사진 없는 placeholder -> wbsl_logo1.png
-
-중요
-현재 GitHub assets 폴더에는 wbsl_logo1.png / wbsl_logo2.png가 아직 없습니다.
-두 PNG 파일을 반드시 assets 폴더에 정확히 이 이름으로 업로드하세요.
-
-GitHub에 덮어쓰기
-- style.css
-- admin.html
-- index.html
-- professor.html
-- research.html
-- publication.html
-- people.html
-- board.html
-- board-detail.html
+적용:
+GitHub에
 - contact.html
-- labmeeting.html
-
-그리고 assets 폴더에:
-- wbsl_logo1.png
-- wbsl_logo2.png
+- style.css
+두 파일만 덮어쓰기 후 Commit
 
 Supabase SQL은 필요 없습니다.
