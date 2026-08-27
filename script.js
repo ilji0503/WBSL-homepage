@@ -156,9 +156,26 @@ function publicationDateText(item) {
   return String(item.publish_date).slice(0, 10).replaceAll('-', '.');
 }
 
+function normalizeNewsCategory(value) {
+  const text = safeText(value).trim();
+  const lower = text.toLowerCase();
+
+  if (text.includes('포스터') || lower.includes('poster')) return '포스터';
+  if (
+    text.includes('학술') || text.includes('학회') || text.includes('수상') ||
+    lower.includes('conference') || lower.includes('symposium') ||
+    lower.includes('award') || lower.includes('prize')
+  ) return '학술 활동';
+
+  if (text.includes('연구실') || lower.includes('lab')) return '연구실 활동';
+  if (text.includes('외부') || lower.includes('external') || lower.includes('outreach')) return '외부 활동';
+  return text || '연구실 활동';
+}
+
 function normalizeNews(rows) {
   return (rows || []).map((item) => ({
     ...item,
+    category: normalizeNewsCategory(item.category),
     order: item.sort_order ?? item.order ?? 0,
     image: item.image_url || item.image || ''
   })).sort((a, b) => (b.year - a.year) || ((b.order || 0) - (a.order || 0)));

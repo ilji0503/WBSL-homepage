@@ -30,6 +30,11 @@
   .activity-photo{aspect-ratio:3/4;background:#f7f9fc;overflow:hidden;position:relative;display:grid;place-items:center}
   .activity-photo img{width:100%;height:100%;object-fit:contain;transition:transform .3s ease}
   .activity-card:hover .activity-photo img{transform:scale(1.025)}
+  .activity-photo-43{aspect-ratio:4/3;background:#f7f9fc;display:grid;place-items:center;overflow:hidden}
+  .activity-photo-43 img{width:100%;height:100%;object-fit:cover}
+  .poster-photo{aspect-ratio:3/4;background:#f7f9fc;display:grid;place-items:center;overflow:hidden}
+  .poster-photo img{width:100%;height:100%;object-fit:contain}
+  .activity-category.poster{background:#f2edff;color:#6546a6}
   .activity-photo.placeholder{display:grid;place-items:center;background:linear-gradient(145deg,#f6f9fd,#eaf0f8)}
   .activity-photo.placeholder img{width:92px;height:92px;object-fit:contain;opacity:.58;transform:none!important}
   .activity-body{padding:17px 18px 18px}
@@ -89,6 +94,7 @@
     <div class="gallery-toolbar">
       <div class="gallery-tabs" role="tablist" aria-label="활동 분류">
         <button class="gallery-tab active" type="button" data-filter="전체">전체</button>
+        <button class="gallery-tab" type="button" data-filter="포스터">포스터</button>
         <button class="gallery-tab" type="button" data-filter="학술 활동">학술 활동</button>
         <button class="gallery-tab" type="button" data-filter="연구실 활동">연구실 활동</button>
         <button class="gallery-tab" type="button" data-filter="외부 활동">외부 활동</button>
@@ -140,6 +146,7 @@
   function normalizeCategory(raw) {
     const text = safe(raw).trim();
     const lower = text.toLowerCase();
+    if (text.includes('포스터') || lower.includes('poster')) return '포스터';
     if (
       text.includes('학술') || text.includes('학회') || text.includes('수상') ||
       lower.includes('conference') || lower.includes('symposium') ||
@@ -173,6 +180,7 @@
   }
 
   function categoryClass(category) {
+    if (category === '포스터') return 'poster';
     if (category === '학술 활동') return 'academic';
     if (category === '외부 활동') return 'external';
     return 'lab';
@@ -181,7 +189,9 @@
   function render() {
     const filtered = allItems.filter((item) => {
       const cat = normalizeCategory(item.category);
-      const categoryMatch = activeFilter === '전체' || cat === activeFilter;
+      const categoryMatch = activeFilter === '전체'
+        ? cat !== '포스터'
+        : cat === activeFilter;
       const q = searchTerm.trim().toLowerCase();
       const searchMatch = !q || safe(item.title).toLowerCase().includes(q) || safe(item.description).toLowerCase().includes(q);
       return categoryMatch && searchMatch;
@@ -199,7 +209,7 @@
     filtered.forEach((item) => {
       const cat = normalizeCategory(item.category);
       const card = document.createElement('article');
-      card.className = 'activity-card';
+      card.className = cat === '포스터' ? 'activity-card poster-card' : 'activity-card';
 
       const clickable = document.createElement('a');
       clickable.className = 'activity-card-link';
@@ -215,7 +225,11 @@
       }
 
       const photo = document.createElement('div');
-      photo.className = item.image_url || item.image ? 'activity-photo' : 'activity-photo placeholder';
+      if (cat === '포스터') {
+        photo.className = item.image_url || item.image ? 'activity-photo poster-photo' : 'activity-photo poster-photo placeholder';
+      } else {
+        photo.className = item.image_url || item.image ? 'activity-photo activity-photo-43' : 'activity-photo activity-photo-43 placeholder';
+      }
       const img = document.createElement('img');
       img.src = item.image_url || item.image || 'assets/wbsl_logo1.png';
       img.alt = item.image_url || item.image ? safe(item.title) : 'WBSL';
