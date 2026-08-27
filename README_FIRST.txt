@@ -1,32 +1,14 @@
-WBSL 홈 Updates + Publication 컴팩트 디자인
+WBSL Publication 미세 조정본
 
 변경 사항
-1) 메인 '연구실 소식과 논문'
-- Latest News / Recent Publications를 각각 흰색 카드로 구성
-- 기존처럼 긴 가로선 위주가 아니라 카드 + 얇은 구분선 + 상단 청록 포인트
-- Recent Publications의 제목 폭과 글자 크기를 줄여 너무 길게 퍼지지 않게 함
-- 아래 버튼도 조금 작고 단정하게 정리
+- 2025 연도 표시를 더 크게 수정
+- 카드 시작 위치를 왼쪽으로 조금 이동
+- 큰 제목(Research Publications)과 연도/카드 사이 간격 축소
+- 한글 제목 영역을 조금 더 길게 확보
+- 한글 제목은 데스크톱에서 한 줄 우선 표시(너무 길면 말줄임표)
+- 전체 폭은 너무 넓지 않게 유지
 
-2) Publication 페이지
-- 전체 폭을 약 900px 정도로 축소
-- 논문 하나당 별도 카드 형태
-- 날짜/학회명은 왼쪽 140px
-- 제목 본문은 약 680px로 제한
-- 화면 끝까지 텍스트가 길게 이어지는 느낌 제거
-- 기존 영문/한글 제목 색상 구분 유지
-- 기존 가로선 제거 상태 유지
-
-3) 이전 수정 유지
-- Footer 흰색 wbsl_logo2
-- Header wbsl_logo1
-- Board 드롭다운
-- Lab Meeting
-- Board 포스터 전체 보기
-- Publication 발행일/한글 제목 기능
-
-적용
-GitHub에 아래 3개만 덮어쓰기:
-- index.html
+적용 파일
 - publication.html
 - style.css
 
