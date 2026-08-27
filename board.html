@@ -34,7 +34,7 @@
   .activity-photo.placeholder img{width:92px;height:92px;object-fit:contain;opacity:.58;transform:none!important}
   .activity-body{padding:17px 18px 18px}
   .activity-category{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#eef3fb;color:var(--navy);font-size:11.5px;font-weight:800;margin-bottom:10px}
-  .activity-category.award{background:#fff4dc;color:#8a5b00}
+  .activity-category.award,.activity-category.academic{background:#eef3ff;color:#345aa9}
   .activity-category.lab{background:#e8f8f5;color:#08776d}
   .activity-category.external{background:#eef3ff;color:#345aa9}
   .activity-title{font-size:16px;line-height:1.5;font-weight:800;color:var(--navy);min-height:48px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -89,7 +89,7 @@
     <div class="gallery-toolbar">
       <div class="gallery-tabs" role="tablist" aria-label="활동 분류">
         <button class="gallery-tab active" type="button" data-filter="전체">전체</button>
-        <button class="gallery-tab" type="button" data-filter="수상">수상</button>
+        <button class="gallery-tab" type="button" data-filter="학술 활동">학술 활동</button>
         <button class="gallery-tab" type="button" data-filter="연구실 활동">연구실 활동</button>
         <button class="gallery-tab" type="button" data-filter="외부 활동">외부 활동</button>
       </div>
@@ -140,9 +140,13 @@
   function normalizeCategory(raw) {
     const text = safe(raw).trim();
     const lower = text.toLowerCase();
-    if (text.includes('수상') || lower.includes('award') || lower.includes('prize')) return '수상';
+    if (
+      text.includes('학술') || text.includes('학회') || text.includes('수상') ||
+      lower.includes('conference') || lower.includes('symposium') ||
+      lower.includes('award') || lower.includes('prize')
+    ) return '학술 활동';
     if (text.includes('연구실') || lower.includes('lab')) return '연구실 활동';
-    if (text.includes('외부') || text.includes('학회') || text.includes('세미나') || lower.includes('conference') || lower.includes('seminar')) return '외부 활동';
+    if (text.includes('외부') || lower.includes('external') || lower.includes('outreach')) return '외부 활동';
     return text || '연구실 활동';
   }
 
@@ -169,7 +173,7 @@
   }
 
   function categoryClass(category) {
-    if (category === '수상') return 'award';
+    if (category === '학술 활동') return 'academic';
     if (category === '외부 활동') return 'external';
     return 'lab';
   }
