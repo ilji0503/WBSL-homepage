@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="admin.css?v=20260824-gallery-crop2">
+<link rel="stylesheet" href="admin.css?v=20260827-lab1">
 <style>
   .admin-logo-img{width:46px;height:46px;object-fit:contain;border-radius:9px;background:#fff;flex:0 0 auto}
   .news-date-note{font-size:11px;color:#8793a6;font-weight:500}
@@ -43,6 +43,7 @@
     <nav class="admin-nav" id="admin-nav" hidden>
       <button class="nav-item active" data-tab="publications">Publications</button>
       <button class="nav-item" data-tab="news">Board / Gallery</button>
+      <button class="nav-item" data-tab="labmeeting">Lab Meeting</button>
       <button class="nav-item" data-tab="members">Members</button>
       <button class="nav-item" data-tab="slides">Main Slider</button>
     </nav>
@@ -137,6 +138,80 @@
             <button class="primary-btn" type="submit">저장</button>
           </form>
           <div class="list-card"><div class="card-head"><div><span class="eyebrow">LIST</span><h2>Board / Gallery</h2></div><span id="news-count" class="count-pill">0</span></div><div id="news-admin-list" class="admin-list"></div></div>
+        </div>
+      </section>
+
+
+      <section class="tab-panel" data-panel="labmeeting">
+        <div class="content-grid">
+          <form id="labmeeting-form" class="editor-card">
+            <div class="card-head">
+              <div><span class="eyebrow">EDITOR</span><h2>랩미팅 자료 추가 / 수정</h2></div>
+              <button class="text-btn" type="button" id="labmeeting-reset">새 항목</button>
+            </div>
+            <input type="hidden" name="id">
+
+            <div class="field-grid two">
+              <label>날짜
+                <input name="meeting_date" type="date" required>
+              </label>
+              <label>같은 날짜 표시 순서
+                <input name="sort_order" type="number" min="1" value="1">
+                <small>1이 가장 먼저 표시됩니다.</small>
+              </label>
+            </div>
+
+            <div class="field-grid two">
+              <label>발표자
+                <input name="presenter" required placeholder="예: 황일지">
+              </label>
+              <label>분류
+                <select name="category" required>
+                  <option value="연구 진행">연구 진행</option>
+                  <option value="논문 리뷰">논문 리뷰</option>
+                  <option value="실험 / 시뮬레이션">실험 / 시뮬레이션</option>
+                  <option value="세미나">세미나</option>
+                  <option value="기타">기타</option>
+                </select>
+              </label>
+            </div>
+
+            <label>발표 제목
+              <textarea name="title" rows="3" required placeholder="예: Micro-LED Current Spreading Analysis"></textarea>
+            </label>
+
+            <label>PPT Google Drive 링크
+              <input name="ppt_url" type="url" placeholder="https://drive.google.com/...">
+              <small>Drive에서 파일 공유 권한을 설정한 뒤 링크를 붙여넣으세요.</small>
+            </label>
+
+            <label>PDF Google Drive 링크
+              <input name="pdf_url" type="url" placeholder="https://drive.google.com/...">
+              <small>PDF가 없으면 비워둬도 됩니다.</small>
+            </label>
+
+            <label>메모
+              <textarea name="notes" rows="2" placeholder="관리 또는 검색용 간단 메모"></textarea>
+            </label>
+
+            <label class="checkbox-label" style="padding-top:0">
+              <input name="is_public" type="checkbox" checked>
+              홈페이지 목록에 표시
+            </label>
+            <small style="display:block;margin:-8px 0 16px;color:#8793a6">
+              민감한 자료는 체크를 해제하세요. 실제 PPT/PDF 열람 권한은 Google Drive에서 별도로 제한하는 것을 권장합니다.
+            </small>
+
+            <button class="primary-btn" type="submit">저장</button>
+          </form>
+
+          <div class="list-card">
+            <div class="card-head">
+              <div><span class="eyebrow">LIST</span><h2>Lab Meeting Archive</h2></div>
+              <span id="labmeeting-count" class="count-pill">0</span>
+            </div>
+            <div id="labmeeting-admin-list" class="admin-list"></div>
+          </div>
         </div>
       </section>
 
@@ -479,5 +554,252 @@
 </script>
 
 <script type="module" src="admin.js?v=20260824-gallery-crop2"></script>
+
+<script type="module">
+(() => {
+  const navBtn = document.querySelector('[data-tab="labmeeting"]');
+  const form = document.getElementById('labmeeting-form');
+  const list = document.getElementById('labmeeting-admin-list');
+  const count = document.getElementById('labmeeting-count');
+  const resetBtn = document.getElementById('labmeeting-reset');
+  const toast = document.getElementById('toast');
+  const pageTitle = document.getElementById('page-title');
+  if (!navBtn || !form || !list) return;
+
+  let supabase = null;
+  let rows = [];
+
+  function localToast(message, isError=false) {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.toggle('error', isError);
+    toast.classList.add('show');
+    clearTimeout(localToast.timer);
+    localToast.timer = setTimeout(() => toast.classList.remove('show'), 2600);
+  }
+
+  function today() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function resetForm() {
+    form.reset();
+    form.elements.id.value = '';
+    form.elements.meeting_date.value = today();
+    form.elements.sort_order.value = '1';
+    form.elements.category.value = '연구 진행';
+    form.elements.is_public.checked = true;
+  }
+
+  function esc(v) {
+    return v == null ? '' : String(v);
+  }
+
+  function formatDate(v) {
+    if (!v) return '';
+    const p = String(v).slice(0,10).split('-');
+    return p.length === 3 ? `${p[0]}.${p[1]}.${p[2]}` : String(v);
+  }
+
+  function empty(text) {
+    const el = document.createElement('div');
+    el.className = 'empty-list';
+    el.textContent = text;
+    return el;
+  }
+
+  function button(text, action, id, danger=false) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `small-btn${danger ? ' danger' : ''}`;
+    b.textContent = text;
+    b.dataset.action = action;
+    b.dataset.id = String(id);
+    return b;
+  }
+
+  function render() {
+    list.innerHTML = '';
+    count.textContent = String(rows.length);
+    if (!rows.length) {
+      list.appendChild(empty('등록된 랩미팅 자료가 없습니다.'));
+      return;
+    }
+
+    rows.forEach(item => {
+      const row = document.createElement('article');
+      row.className = 'list-item';
+
+      const main = document.createElement('div');
+      main.className = 'item-main';
+
+      const meta = document.createElement('div');
+      meta.className = 'item-meta';
+
+      const date = document.createElement('span');
+      date.className = 'mini-pill';
+      date.textContent = formatDate(item.meeting_date);
+
+      const category = document.createElement('span');
+      category.textContent = esc(item.category);
+
+      const visibility = document.createElement('span');
+      visibility.textContent = item.is_public ? '홈페이지 표시' : '비공개';
+
+      meta.append(date, category, visibility);
+
+      const title = document.createElement('div');
+      title.className = 'item-title';
+      title.textContent = esc(item.title);
+
+      const sub = document.createElement('div');
+      sub.className = 'item-sub';
+      const links = [
+        item.ppt_url ? 'PPT' : '',
+        item.pdf_url ? 'PDF' : ''
+      ].filter(Boolean).join(' · ');
+      sub.textContent = [esc(item.presenter), links].filter(Boolean).join(' · ');
+
+      main.append(meta, title, sub);
+
+      const actions = document.createElement('div');
+      actions.className = 'item-actions';
+      actions.append(
+        button('수정', 'edit', item.id),
+        button('삭제', 'delete', item.id, true)
+      );
+
+      row.append(main, actions);
+      list.appendChild(row);
+    });
+  }
+
+  async function initClient() {
+    if (supabase) return supabase;
+    const config = await import('./supabase-config.js?v=20260827-lab1');
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+    supabase = createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true }
+    });
+    return supabase;
+  }
+
+  async function load() {
+    try {
+      const client = await initClient();
+      const { data, error } = await client
+        .from('lab_meetings')
+        .select('*')
+        .order('meeting_date', { ascending: false })
+        .order('sort_order', { ascending: true })
+        .order('id', { ascending: false });
+
+      if (error) throw error;
+      rows = data || [];
+      render();
+    } catch (error) {
+      console.error(error);
+      list.innerHTML = '';
+      list.appendChild(empty('LAB_MEETING_MIGRATION.sql을 Supabase에서 먼저 실행해 주세요.'));
+      count.textContent = '0';
+    }
+  }
+
+  navBtn.addEventListener('click', () => {
+    setTimeout(() => { if (pageTitle) pageTitle.textContent = 'Lab Meeting'; }, 0);
+    load();
+  });
+
+  resetBtn.addEventListener('click', resetForm);
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const buttonEl = form.querySelector('button[type="submit"]');
+    buttonEl.disabled = true;
+    buttonEl.textContent = '저장 중...';
+
+    try {
+      const client = await initClient();
+      const id = form.elements.id.value;
+      const payload = {
+        meeting_date: form.elements.meeting_date.value,
+        presenter: form.elements.presenter.value.trim(),
+        category: form.elements.category.value,
+        title: form.elements.title.value.trim(),
+        ppt_url: form.elements.ppt_url.value.trim(),
+        pdf_url: form.elements.pdf_url.value.trim(),
+        notes: form.elements.notes.value.trim(),
+        is_public: form.elements.is_public.checked,
+        sort_order: Math.max(1, Number(form.elements.sort_order.value) || 1),
+        updated_at: new Date().toISOString()
+      };
+
+      if (!payload.meeting_date || !payload.presenter || !payload.title) {
+        throw new Error('날짜, 발표자, 발표 제목을 입력해 주세요.');
+      }
+
+      const query = id
+        ? client.from('lab_meetings').update(payload).eq('id', id)
+        : client.from('lab_meetings').insert(payload);
+
+      const { error } = await query;
+      if (error) throw error;
+
+      resetForm();
+      await load();
+      localToast('랩미팅 자료를 저장했습니다.');
+    } catch (error) {
+      console.error(error);
+      localToast(error.message || '저장 중 오류가 발생했습니다.', true);
+    } finally {
+      buttonEl.disabled = false;
+      buttonEl.textContent = '저장';
+    }
+  });
+
+  list.addEventListener('click', async (event) => {
+    const target = event.target.closest('[data-action]');
+    if (!target) return;
+    const item = rows.find(x => String(x.id) === String(target.dataset.id));
+    if (!item) return;
+
+    if (target.dataset.action === 'edit') {
+      form.elements.id.value = item.id;
+      form.elements.meeting_date.value = String(item.meeting_date || '').slice(0,10);
+      form.elements.presenter.value = esc(item.presenter);
+      form.elements.category.value = esc(item.category) || '연구 진행';
+      form.elements.title.value = esc(item.title);
+      form.elements.ppt_url.value = esc(item.ppt_url);
+      form.elements.pdf_url.value = esc(item.pdf_url);
+      form.elements.notes.value = esc(item.notes);
+      form.elements.is_public.checked = Boolean(item.is_public);
+      form.elements.sort_order.value = item.sort_order || 1;
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    if (target.dataset.action === 'delete') {
+      if (!confirm('이 랩미팅 자료를 삭제할까요?')) return;
+      try {
+        const client = await initClient();
+        const { error } = await client.from('lab_meetings').delete().eq('id', item.id);
+        if (error) throw error;
+        await load();
+        localToast('삭제했습니다.');
+      } catch (error) {
+        console.error(error);
+        localToast(error.message || '삭제 중 오류가 발생했습니다.', true);
+      }
+    }
+  });
+
+  resetForm();
+})();
+</script>
+
 </body>
 </html>

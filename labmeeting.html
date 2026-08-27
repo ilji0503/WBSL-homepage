@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab Meeting | WBSL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="style.css?v=20260827-lab1">
+<style>
+  .labmeeting-page{padding-top:58px}
+  .archive-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}
+  .archive-head .section-head{margin-bottom:0}
+  .archive-note{font-size:12.5px;color:var(--ink-soft);margin-top:10px;line-height:1.6}
+
+  .archive-toolbar{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:18px;margin-bottom:28px;box-shadow:0 14px 34px -30px rgba(15,31,61,.38)
+  }
+  .year-tabs,.category-tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .category-tabs{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .year-tab,.category-tab{
+    border:1px solid #d7e0ec;background:#fff;color:var(--ink-soft);
+    border-radius:999px;padding:9px 16px;font:inherit;font-size:13px;font-weight:780;
+    cursor:pointer;transition:.18s
+  }
+  .year-tab:hover,.category-tab:hover{border-color:var(--cyan-dark);color:var(--cyan-dark)}
+  .year-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+  .category-tab.active{background:#e8f8f5;border-color:#bfe8e1;color:#08776d}
+
+  .archive-search{display:flex;gap:8px;margin-top:14px}
+  .archive-search input{
+    flex:1;min-width:0;height:42px;border:1px solid #d7e0ec;border-radius:10px;
+    padding:0 13px;font:inherit;outline:none
+  }
+  .archive-search input:focus{border-color:var(--cyan-dark);box-shadow:0 0 0 3px rgba(47,208,192,.10)}
+  .archive-search button{
+    height:42px;border:0;border-radius:10px;background:var(--navy);color:#fff;
+    padding:0 18px;font-weight:800;cursor:pointer
+  }
+
+  .month-group{margin-top:34px}
+  .month-title{
+    font-size:14px;font-weight:850;letter-spacing:.05em;color:var(--navy);
+    padding-bottom:10px;border-bottom:2px solid var(--navy);margin-bottom:0
+  }
+  .meeting-row{
+    display:grid;grid-template-columns:105px 145px 130px minmax(0,1fr) auto;
+    gap:16px;align-items:center;padding:18px 4px;border-bottom:1px solid var(--line)
+  }
+  .meeting-date{font-size:13px;font-weight:750;color:var(--ink-soft)}
+  .meeting-category{
+    width:max-content;max-width:100%;font-size:11.5px;font-weight:800;
+    padding:5px 9px;border-radius:999px;background:#eef3fb;color:var(--navy)
+  }
+  .meeting-presenter{font-size:13px;font-weight:700;color:var(--ink)}
+  .meeting-title{min-width:0;font-size:14.5px;line-height:1.55;font-weight:650;color:var(--ink)}
+  .meeting-links{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap}
+  .meeting-link{
+    display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 11px;
+    border:1px solid #d5dfec;border-radius:9px;background:#fff;color:var(--navy);
+    font-size:11.5px;font-weight:800;white-space:nowrap
+  }
+  .meeting-link:hover{border-color:var(--cyan-dark);color:var(--cyan-dark);background:#f5fbfa}
+  .meeting-link.pdf{background:var(--navy);border-color:var(--navy);color:#fff}
+  .meeting-link.pdf:hover{background:var(--indigo);color:#fff}
+  .archive-empty{
+    padding:70px 20px;text-align:center;color:#8592a5;border:1px dashed #d5deea;
+    border-radius:16px;background:#fafbfd
+  }
+
+  @media(max-width:900px){
+    .meeting-row{grid-template-columns:92px 130px minmax(0,1fr) auto}
+    .meeting-presenter{grid-column:2}
+    .meeting-category{grid-column:1}
+    .meeting-date{grid-column:1;grid-row:2}
+    .meeting-title{grid-column:2/4;grid-row:2}
+    .meeting-links{grid-column:4;grid-row:1/3}
+  }
+  @media(max-width:650px){
+    .labmeeting-page{padding-top:42px}
+    .meeting-row{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:17px 2px}
+    .meeting-links{justify-content:flex-start}
+    .archive-search{flex-direction:column}
+    .archive-search button{width:100%}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="index.html" class="logo">
+        <img src="assets/wbsl-logo.png" alt="WBSL Logo" class="logo-img">
+        <span class="logo-text">WBSL<span>Wide Bandgap Semiconductor Laboratory</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="professor.html">Professor</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="publication.html">Publication</a></li>
+        <li><a href="people.html">People</a></li>
+        <li><a href="board.html">Board</a></li>
+        <li><a href="labmeeting.html" class="active">Lab Meeting</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="contact.html" class="btn btn-outline">Contact us</a>
+        <a href="admin.html" class="admin-login-btn" aria-label="관리자 로그인">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+          <span>Admin Login</span>
+        </a>
+        <button class="burger" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="page-banner">
+  <div class="hero-bg"><div class="hero-grid"></div></div>
+  <div class="wrap">
+    <span class="eyebrow">Archive</span>
+    <h1>Lab Meeting</h1>
+    <div class="crumb"><a href="index.html">Home</a> / Lab Meeting</div>
+  </div>
+</section>
+
+<section class="labmeeting-page">
+  <div class="wrap">
+    <div class="archive-head">
+      <div class="section-head">
+        <span class="eyebrow">WBSL Archive</span>
+        <h2>랩미팅 자료실</h2>
+        <p class="archive-note">실제 PPT/PDF 파일은 Google Drive에 저장됩니다. 공유 권한이 있는 계정만 열람할 수 있습니다.</p>
+      </div>
+    </div>
+
+    <div class="archive-toolbar">
+      <div id="year-tabs" class="year-tabs" aria-label="연도 선택"></div>
+
+      <div id="category-tabs" class="category-tabs" aria-label="분류 선택">
+        <button class="category-tab active" type="button" data-category="전체">전체</button>
+        <button class="category-tab" type="button" data-category="연구 진행">연구 진행</button>
+        <button class="category-tab" type="button" data-category="논문 리뷰">논문 리뷰</button>
+        <button class="category-tab" type="button" data-category="실험 / 시뮬레이션">실험 / 시뮬레이션</button>
+        <button class="category-tab" type="button" data-category="세미나">세미나</button>
+        <button class="category-tab" type="button" data-category="기타">기타</button>
+      </div>
+
+      <form id="archive-search-form" class="archive-search">
+        <input id="archive-search-input" type="search" placeholder="발표자 또는 제목 검색" aria-label="랩미팅 자료 검색">
+        <button type="submit">검색</button>
+      </form>
+    </div>
+
+    <div id="meeting-list" aria-live="polite"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">
+          <img src="assets/wbsl-logo.png" alt="WBSL Logo" style="width:30px;height:30px;object-fit:contain">
+          <b>WBSL</b>
+        </div>
+        <p style="font-size:13.5px; line-height:1.7;">국립부경대학교 전기공학부 디스플레이반도체공학전공<br>부산광역시 남구 용소로 45, 가온관(B21)</p>
+      </div>
+      <div><h4>Sitemap</h4><ul><li><a href="professor.html">Professor</a></li><li><a href="research.html">Research</a></li><li><a href="publication.html">Publication</a></li><li><a href="people.html">People</a></li></ul></div>
+      <div><h4>Lab</h4><ul><li><a href="board.html">Board</a></li><li><a href="labmeeting.html">Lab Meeting</a></li><li><a href="contact.html">Contact us</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li><a href="mailto:han@pknu.ac.kr">han@pknu.ac.kr</a></li><li><a href="tel:+82516296409">+82-51-629-6409</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 WBSL. All rights reserved.</span><span>Pukyong National University</span></div>
+  </div>
+</footer>
+
+<script type="module">
+  const burger = document.querySelector('.burger');
+  const navLinks = document.querySelector('.nav-links');
+  if (burger && navLinks) {
+    burger.addEventListener('click', () => {
+      const open = navLinks.style.display === 'flex';
+      navLinks.style.cssText = open
+        ? ''
+        : 'display:flex; position:absolute; top:86px; left:0; right:0; background:#fff; flex-direction:column; padding:20px 28px; gap:18px; border-bottom:1px solid #e2e8f2;';
+    });
+  }
+
+  const fixedYears = [2023, 2024, 2025, 2026];
+  const yearTabs = document.getElementById('year-tabs');
+  const categoryTabs = [...document.querySelectorAll('.category-tab')];
+  const list = document.getElementById('meeting-list');
+  const searchForm = document.getElementById('archive-search-form');
+  const searchInput = document.getElementById('archive-search-input');
+
+  let rows = [];
+  let selectedYear = 2026;
+  let selectedCategory = '전체';
+  let searchTerm = '';
+
+  const safe = v => v == null ? '' : String(v);
+
+  function normalizeCategory(v) {
+    const s = safe(v).trim();
+    const low = s.toLowerCase();
+    if (s === '연구 진행' || low === 'research') return '연구 진행';
+    if (s === '논문 리뷰' || low.includes('paper')) return '논문 리뷰';
+    if (s === '실험 / 시뮬레이션' || low.includes('experiment') || low.includes('simulation')) return '실험 / 시뮬레이션';
+    if (s === '세미나' || low.includes('seminar')) return '세미나';
+    return s || '기타';
+  }
+
+  function formatDate(v) {
+    if (!v) return '';
+    const p = String(v).slice(0,10).split('-');
+    return p.length === 3 ? `${p[0]}.${p[1]}.${p[2]}` : String(v);
+  }
+
+  function yearOf(item) {
+    return Number(String(item.meeting_date || '').slice(0,4)) || 0;
+  }
+
+  function monthKey(item) {
+    return String(item.meeting_date || '').slice(0,7);
+  }
+
+  function renderYearTabs() {
+    const dataYears = rows.map(yearOf).filter(Boolean);
+    const years = [...new Set([...fixedYears, ...dataYears])].sort((a,b) => a-b);
+    yearTabs.innerHTML = '';
+    years.forEach(year => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = `year-tab${year === selectedYear ? ' active' : ''}`;
+      b.textContent = year;
+      b.addEventListener('click', () => {
+        selectedYear = year;
+        renderYearTabs();
+        render();
+      });
+      yearTabs.appendChild(b);
+    });
+  }
+
+  function makeLink(label, url, pdf=false) {
+    if (!url) return null;
+    const a = document.createElement('a');
+    a.className = `meeting-link${pdf ? ' pdf' : ''}`;
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = label;
+    return a;
+  }
+
+  function render() {
+    const q = searchTerm.trim().toLowerCase();
+    const filtered = rows.filter(item => {
+      const yearMatch = yearOf(item) === selectedYear;
+      const category = normalizeCategory(item.category);
+      const categoryMatch = selectedCategory === '전체' || category === selectedCategory;
+      const searchMatch = !q ||
+        safe(item.presenter).toLowerCase().includes(q) ||
+        safe(item.title).toLowerCase().includes(q) ||
+        safe(item.notes).toLowerCase().includes(q);
+      return yearMatch && categoryMatch && searchMatch;
+    });
+
+    list.innerHTML = '';
+    if (!filtered.length) {
+      const empty = document.createElement('div');
+      empty.className = 'archive-empty';
+      empty.textContent = '조건에 맞는 랩미팅 자료가 없습니다.';
+      list.appendChild(empty);
+      return;
+    }
+
+    const grouped = new Map();
+    filtered.forEach(item => {
+      const key = monthKey(item);
+      if (!grouped.has(key)) grouped.set(key, []);
+      grouped.get(key).push(item);
+    });
+
+    [...grouped.keys()].sort((a,b) => b.localeCompare(a)).forEach(month => {
+      const section = document.createElement('section');
+      section.className = 'month-group';
+
+      const heading = document.createElement('h3');
+      heading.className = 'month-title';
+      heading.textContent = month.replace('-', '.');
+      section.appendChild(heading);
+
+      grouped.get(month)
+        .sort((a,b) =>
+          String(b.meeting_date).localeCompare(String(a.meeting_date)) ||
+          (Number(a.sort_order)||1) - (Number(b.sort_order)||1)
+        )
+        .forEach(item => {
+          const row = document.createElement('article');
+          row.className = 'meeting-row';
+
+          const date = document.createElement('div');
+          date.className = 'meeting-date';
+          date.textContent = formatDate(item.meeting_date);
+
+          const category = document.createElement('div');
+          category.className = 'meeting-category';
+          category.textContent = normalizeCategory(item.category);
+
+          const presenter = document.createElement('div');
+          presenter.className = 'meeting-presenter';
+          presenter.textContent = safe(item.presenter);
+
+          const title = document.createElement('div');
+          title.className = 'meeting-title';
+          title.textContent = safe(item.title);
+
+          const links = document.createElement('div');
+          links.className = 'meeting-links';
+          const ppt = makeLink('PPT 열기', item.ppt_url, false);
+          const pdf = makeLink('PDF 열기', item.pdf_url, true);
+          if (ppt) links.appendChild(ppt);
+          if (pdf) links.appendChild(pdf);
+          if (!ppt && !pdf) {
+            const none = document.createElement('span');
+            none.style.cssText = 'font-size:11.5px;color:#8995a7';
+            none.textContent = '링크 없음';
+            links.appendChild(none);
+          }
+
+          row.append(date, category, presenter, title, links);
+          section.appendChild(row);
+        });
+
+      list.appendChild(section);
+    });
+  }
+
+  categoryTabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedCategory = btn.dataset.category;
+      categoryTabs.forEach(x => x.classList.toggle('active', x === btn));
+      render();
+    });
+  });
+
+  searchForm.addEventListener('submit', event => {
+    event.preventDefault();
+    searchTerm = searchInput.value;
+    render();
+  });
+
+  searchInput.addEventListener('input', () => {
+    if (!searchInput.value) {
+      searchTerm = '';
+      render();
+    }
+  });
+
+  async function init() {
+    try {
+      const config = await import('./supabase-config.js?v=20260827-lab1');
+      const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY);
+
+      const { data, error } = await supabase
+        .from('lab_meetings')
+        .select('*')
+        .eq('is_public', true)
+        .order('meeting_date', { ascending: false })
+        .order('sort_order', { ascending: true })
+        .order('id', { ascending: false });
+
+      if (error) throw error;
+      rows = data || [];
+      renderYearTabs();
+      render();
+    } catch (error) {
+      console.error(error);
+      renderYearTabs();
+      list.innerHTML = '<div class="archive-empty">랩미팅 자료실을 준비 중입니다.</div>';
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
