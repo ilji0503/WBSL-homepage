@@ -1,31 +1,766 @@
 /*
-  WBSL page-banner compact override
-  Base: current deployed style at 2055f9d10721e9bbe0331e2187b3f5f5f0486498
+  WBSL global branding patch — 2026-08-24
+  Keeps the current site design exactly as deployed at the pinned commit,
+  uses wbsl_logo1 on light backgrounds and wbsl_logo2 on dark backgrounds.
 */
-@import url('https://cdn.jsdelivr.net/gh/ilji0503/WBSL-homepage@2055f9d10721e9bbe0331e2187b3f5f5f0486498/style.css');
+@import url('https://cdn.jsdelivr.net/gh/ilji0503/WBSL-homepage@763c8f98161f2b92949214e45ee3d32af4d6dc49/style.css');
 
-/* Page banner: about 25% thinner. Typography is unchanged. */
+/* ===== WBSL LOGO: LIGHT HEADER ===== */
+.logo > .logo-mark,
+.logo > .logo-img{
+  display:none !important;
+}
+.logo::before{
+  content:'';
+  display:block;
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
+  background:transparent url('assets/wbsl_logo1.png?v=20260827-logo12') center/contain no-repeat;
+}
+
+/* ===== WBSL LOGO: DARK FOOTER ===== */
+.foot-logo > svg,
+.foot-logo > img{
+  display:none !important;
+}
+.foot-logo::before{
+  content:'';
+  display:block;
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  background:transparent url('assets/wbsl_logo2.png?v=20260827-logo12') center/contain no-repeat;
+}
+
+@media(max-width:560px){
+  .logo::before{width:46px;height:46px;flex-basis:46px;}
+  .foot-logo::before{width:31px;height:31px;flex-basis:31px;}
+}
+
+
+/* ===== BOARD DROPDOWN NAV (2026-08-27) ===== */
+.nav-board-group{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.nav-board-link{
+  display:inline-flex!important;
+  align-items:center;
+  gap:5px;
+}
+.nav-board-caret{
+  font-size:10px;
+  line-height:1;
+  color:var(--ink-soft);
+  transform:translateY(1px);
+  transition:transform .18s ease;
+}
+.nav-board-group:hover .nav-board-caret,
+.nav-board-group:focus-within .nav-board-caret{
+  transform:translateY(1px) rotate(180deg);
+}
+.nav-dropdown-menu{
+  position:absolute;
+  z-index:100;
+  top:calc(100% + 10px);
+  left:50%;
+  transform:translateX(-50%) translateY(-4px);
+  min-width:172px;
+  padding:8px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#fff;
+  box-shadow:0 18px 45px -24px rgba(15,31,61,.48);
+  display:grid;
+  gap:2px;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .16s ease,transform .16s ease,visibility .16s;
+}
+.nav-board-group::before{
+  content:'';
+  position:absolute;
+  left:-12px;
+  right:-12px;
+  top:100%;
+  height:16px;
+}
+.nav-board-group:hover .nav-dropdown-menu,
+.nav-board-group:focus-within .nav-dropdown-menu{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
+.nav-dropdown-menu li{display:block;}
+.nav-dropdown-menu a{
+  display:block;
+  width:100%;
+  padding:10px 12px!important;
+  border-radius:9px;
+  font-size:13px!important;
+  font-weight:720!important;
+  color:var(--ink)!important;
+  white-space:nowrap;
+}
+.nav-dropdown-menu a::after{display:none!important;}
+.nav-dropdown-menu a:hover,
+.nav-dropdown-menu a.active{
+  background:var(--sky);
+  color:var(--cyan-dark)!important;
+}
+
+/* Unified WBSL logo */
+.logo-img{
+  width:52px;
+  height:52px;
+  object-fit:contain;
+  flex:0 0 auto;
+}
+.footer-logo-img{
+  width:30px;
+  height:30px;
+  object-fit:contain;
+  flex:0 0 auto;
+}
+
+@media(max-width:920px){
+  .nav-board-group{
+    display:block;
+    width:100%;
+  }
+  .nav-board-link{width:max-content;}
+  .nav-board-group::before{display:none;}
+  .nav-dropdown-menu{
+    position:static;
+    min-width:0;
+    width:100%;
+    transform:none!important;
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    box-shadow:none;
+    border:0;
+    border-left:2px solid var(--cyan-soft);
+    border-radius:0;
+    padding:5px 0 0 12px;
+    margin-top:4px;
+    background:transparent;
+    gap:0;
+  }
+  .nav-dropdown-menu a{
+    padding:7px 10px!important;
+    font-size:12.5px!important;
+    color:var(--ink-soft)!important;
+  }
+  .nav-board-caret{display:none;}
+}
+
+
+/* ===== PUBLICATION DATE + BILINGUAL TITLES (2026-08-27) ===== */
+#research .section-head{
+  max-width:1000px;
+}
+#research .section-head p{
+  max-width:1000px;
+}
+
+.publication-date{
+  display:inline-flex;
+  width:max-content;
+  padding:5px 9px;
+  border-radius:7px;
+  background:var(--sky);
+  color:var(--navy);
+  font-size:11.5px;
+  font-weight:750;
+  white-space:nowrap;
+}
+.publication-title-en{
+  display:block;
+  color:var(--navy);
+  font-size:15.5px;
+  font-weight:760;
+  line-height:1.55;
+  word-break:normal;
+  overflow-wrap:break-word;
+  transition:color .18s ease;
+}
+a.publication-title-en:hover{
+  color:var(--cyan-dark);
+}
+.publication-title-ko{
+  margin-top:6px;
+  color:var(--cyan-dark);
+  font-size:14px;
+  font-weight:700;
+  line-height:1.55;
+}
+.home-publication-copy{
+  min-width:0;
+}
+.home-publication-journal{
+  display:block;
+  margin-bottom:4px;
+  color:var(--ink-soft);
+  font-size:12.5px;
+  font-style:normal;
+}
+.home-publication-en{
+  display:block;
+  color:var(--navy);
+  font-weight:720;
+  line-height:1.55;
+  transition:color .18s ease;
+}
+a.home-publication-en:hover{
+  color:var(--cyan-dark);
+}
+.home-publication-ko{
+  display:block;
+  margin-top:4px;
+  color:var(--cyan-dark);
+  font-size:13px;
+  font-weight:650;
+  line-height:1.5;
+}
+
+
+/* ===== PUBLICATION WIDE CLEAN LAYOUT (2026-08-27) ===== */
+.publication-page{
+  width:100%;
+}
+.publication-page .section-head{
+  max-width:none;
+  margin-bottom:46px;
+}
+.publication-list{
+  max-width:none!important;
+  width:100%;
+}
+.publication-year{
+  margin-top:50px;
+  margin-bottom:18px;
+  padding-bottom:0!important;
+  border-bottom:0!important;
+  font-size:15px;
+}
+.publication-year:first-child{
+  margin-top:0;
+}
+.publication-item{
+  grid-template-columns:190px minmax(0,1fr)!important;
+  gap:34px!important;
+  padding:22px 0 26px!important;
+  border-bottom:0!important;
+  align-items:start;
+}
+.publication-meta{
+  gap:10px;
+}
+.publication-body{
+  width:100%;
+  max-width:none;
+  min-width:0;
+}
+.publication-title-en{
+  width:100%;
+  max-width:none;
+  font-size:16px;
+  line-height:1.58;
+  letter-spacing:-.01em;
+}
+.publication-title-ko{
+  max-width:none;
+  margin-top:7px;
+  font-size:14.5px;
+  line-height:1.58;
+}
+.publication-authors{
+  margin-top:10px;
+}
+@media (min-width:1100px){
+  .publication-page{
+    max-width:none;
+  }
+}
+@media (max-width:700px){
+  .publication-item{
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+    padding:18px 0 22px!important;
+  }
+}
+
+/* ===== BOARD POSTER FULL VIEW ===== */
+.activity-photo{background:#f7f9fc!important}
+.activity-photo img{object-fit:contain!important}
+
+
+/* ===== LOGO BACKGROUND CLEANUP ===== */
+.logo::before,
+.foot-logo::before{
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.logo::before{
+  background-color:transparent!important;
+  background-image:url('assets/wbsl_logo1.png?v=20260827-logo12')!important;
+}
+.foot-logo::before{
+  background-color:transparent!important;
+  background-image:url('assets/wbsl_logo2.png?v=20260827-logo12')!important;
+}
+.footer-logo-img,
+.logo-img{
+  background:transparent!important;
+  border-radius:0!important;
+}
+
+
+/* =========================================================
+   HOME UPDATES + PUBLICATION COMPACT VISUAL (2026-08-27)
+   ========================================================= */
+
+/* ---------- HOME: 연구실 소식과 논문 ---------- */
+.alt{
+  background:#f3f7fb!important;
+}
+.alt .wrap{
+  max-width:1160px;
+}
+.alt .section-head{
+  margin-bottom:30px!important;
+}
+.alt .section-head h2{
+  font-size:30px;
+}
+.news-grid{
+  grid-template-columns:1fr 1fr!important;
+  gap:24px!important;
+}
+.news-col{
+  position:relative;
+  min-width:0;
+  min-height:270px;
+  padding:24px 24px 22px;
+  border:1px solid #dfe7f1;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 18px 42px -36px rgba(15,31,61,.42);
+  overflow:hidden;
+}
+.news-col::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:3px;
+  background:linear-gradient(90deg,var(--cyan),#78b9e8);
+}
+.news-col h3{
+  margin:0 0 14px!important;
+  padding:0 0 12px!important;
+  border-bottom:1px solid #e7edf5!important;
+  font-size:12px!important;
+  color:var(--navy)!important;
+  letter-spacing:.08em!important;
+}
+.news-col .news-item{
+  grid-template-columns:86px minmax(0,1fr)!important;
+  gap:14px!important;
+  padding:13px 0!important;
+  border-bottom:0!important;
+}
+.news-col .news-item + .news-item{
+  margin-top:2px;
+}
+.news-col .tag{
+  font-size:10.5px;
+  padding:5px 8px;
+  border-radius:7px;
+}
+.news-col .empty-state{
+  padding:20px 0!important;
+  color:#8a96a8;
+}
+.home-publication-copy{
+  max-width:420px;
+}
+.home-publication-journal{
+  margin-bottom:4px!important;
+  font-size:11.5px!important;
+}
+.home-publication-en{
+  max-width:420px;
+  font-size:13.5px!important;
+  line-height:1.5!important;
+  font-weight:720!important;
+}
+.home-publication-ko{
+  max-width:420px;
+  margin-top:4px!important;
+  font-size:12.5px!important;
+  line-height:1.5!important;
+}
+.update-actions{
+  margin-top:24px!important;
+  gap:9px!important;
+}
+.update-actions .btn{
+  padding:9px 16px!important;
+  font-size:12.5px!important;
+  background:#fff;
+}
+
+/* ---------- PUBLICATION PAGE ---------- */
+.publication-page{
+  max-width:1000px!important;
+  margin:0 auto!important;
+}
+.publication-page .section-head{
+  max-width:900px!important;
+  margin-bottom:36px!important;
+}
+.publication-page .section-head h2{
+  font-size:30px!important;
+}
+.publication-list{
+  width:100%!important;
+  max-width:900px!important;
+  margin:0 auto!important;
+}
+.publication-year{
+  margin:38px 0 16px!important;
+  padding:0!important;
+  border:0!important;
+  font-size:14px!important;
+  color:var(--navy)!important;
+  letter-spacing:.04em!important;
+}
+.publication-year:first-child{
+  margin-top:0!important;
+}
+.publication-item{
+  display:grid!important;
+  grid-template-columns:140px minmax(0,1fr)!important;
+  gap:24px!important;
+  padding:20px 22px!important;
+  margin-bottom:14px!important;
+  border:1px solid #e1e8f1!important;
+  border-radius:16px!important;
+  background:#fff!important;
+  box-shadow:0 14px 32px -30px rgba(15,31,61,.35);
+  align-items:start!important;
+}
+.publication-item:hover{
+  border-color:#cbd7e5!important;
+  box-shadow:0 18px 38px -30px rgba(15,31,61,.42);
+}
+.publication-meta{
+  gap:8px!important;
+}
+.publication-date{
+  font-size:10.8px!important;
+  padding:5px 8px!important;
+}
+.publication-journal{
+  font-size:11.5px!important;
+  line-height:1.45!important;
+}
+.publication-body{
+  width:100%!important;
+  max-width:680px!important;
+}
+.publication-title-en{
+  width:100%!important;
+  max-width:680px!important;
+  font-size:14.5px!important;
+  line-height:1.52!important;
+  font-weight:760!important;
+}
+.publication-title-ko{
+  max-width:680px!important;
+  margin-top:6px!important;
+  font-size:13.5px!important;
+  line-height:1.52!important;
+}
+.publication-authors{
+  max-width:680px!important;
+  margin-top:8px!important;
+  font-size:12.5px!important;
+  line-height:1.5!important;
+}
+
+@media(max-width:920px){
+  .news-grid{
+    grid-template-columns:1fr!important;
+  }
+  .news-col{
+    min-height:0;
+  }
+  .home-publication-copy,
+  .home-publication-en,
+  .home-publication-ko{
+    max-width:none;
+  }
+}
+@media(max-width:700px){
+  .publication-page,
+  .publication-page .section-head,
+  .publication-list{
+    max-width:none!important;
+  }
+  .publication-item{
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+    padding:18px!important;
+  }
+  .publication-body,
+  .publication-title-en,
+  .publication-title-ko,
+  .publication-authors{
+    max-width:none!important;
+  }
+}
+
+
+/* ===== HOME UPDATES FINETUNE (2026-08-27) ===== */
+.news-col h3{
+  font-size:14.5px!important;
+  font-weight:850!important;
+  letter-spacing:.06em!important;
+}
+.news-col .news-item{
+  grid-template-columns:120px minmax(0,1fr)!important;
+  gap:16px!important;
+}
+.home-publication-journal{
+  margin-bottom:6px!important;
+  font-size:12px!important;
+}
+.home-publication-en{
+  max-width:440px!important;
+  font-size:15px!important;
+  line-height:1.48!important;
+  font-weight:760!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+}
+.home-publication-ko{
+  max-width:440px!important;
+  margin-top:6px!important;
+  font-size:13.2px!important;
+  line-height:1.52!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+}
+#home-publication-list wbr{
+  display:inline;
+}
+@media(max-width:920px){
+  .news-col .news-item{
+    grid-template-columns:98px minmax(0,1fr)!important;
+  }
+  .home-publication-en,
+  .home-publication-ko{
+    max-width:none!important;
+  }
+}
+@media(max-width:700px){
+  .news-col h3{
+    font-size:13.5px!important;
+  }
+  .news-col .news-item{
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+  }
+}
+
+/* ===== PUBLICATION FINETUNE (2026-08-27) ===== */
+.publication-page{
+  max-width:1080px!important;
+  margin:0 auto!important;
+}
+.publication-page .section-head{
+  max-width:980px!important;
+  margin-bottom:22px!important;
+}
+.publication-page .section-head h2{
+  margin-bottom:0!important;
+}
+.publication-list{
+  width:100%!important;
+  max-width:980px!important;
+  margin:0!important;
+}
+.publication-year{
+  margin:18px 0 12px!important;
+  padding:0!important;
+  font-size:22px!important;
+  font-weight:850!important;
+  letter-spacing:-0.01em!important;
+}
+.publication-item{
+  grid-template-columns:150px minmax(0,1fr)!important;
+  gap:22px!important;
+  padding:18px 20px!important;
+  margin-bottom:12px!important;
+  border-radius:18px!important;
+}
+.publication-body{
+  max-width:760px!important;
+}
+.publication-title-en{
+  max-width:760px!important;
+  font-size:14.2px!important;
+  line-height:1.48!important;
+}
+.publication-title-ko{
+  max-width:760px!important;
+  font-size:13px!important;
+  line-height:1.45!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+.publication-authors{
+  max-width:760px!important;
+  font-size:12.5px!important;
+}
+@media(max-width:1100px){
+  .publication-list{max-width:940px!important;}
+  .publication-body,.publication-title-en,.publication-title-ko,.publication-authors{max-width:720px!important;}
+}
+@media(max-width:820px){
+  .publication-title-ko{
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+}
+@media(max-width:700px){
+  .publication-page .section-head{margin-bottom:18px!important;}
+  .publication-year{font-size:19px!important; margin:14px 0 10px!important;}
+  .publication-item{grid-template-columns:1fr!important; gap:10px!important; padding:16px!important;}
+  .publication-body,.publication-title-en,.publication-title-ko,.publication-authors{max-width:none!important;}
+  .publication-title-ko{white-space:normal!important; overflow:visible!important; text-overflow:clip!important;}
+}
+
+/* ===== CONTACT VISUAL REFINEMENT (2026-08-27) ===== */
+.contact-section{
+  background:linear-gradient(180deg,#f6f9fc 0%,#ffffff 82%);
+  padding:64px 0 78px;
+}
+.contact-section .contact-layout{
+  grid-template-columns:.88fr 1.12fr;
+  gap:28px;
+  align-items:stretch;
+}
+.contact-info-card,
+.contact-map-card{
+  border:1px solid #dfe7f1;
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 20px 48px -38px rgba(15,31,61,.40);
+  overflow:hidden;
+}
+.contact-info-card{
+  padding:30px 30px 24px;
+  position:relative;
+}
+.contact-info-card::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg,var(--cyan),#5da9e9);
+}
+.contact-kicker{
+  display:block;
+  color:var(--cyan-dark);
+  font-size:11.5px;
+  font-weight:850;
+  letter-spacing:.10em;
+  margin-bottom:8px;
+}
+.contact-intro{
+  margin-bottom:14px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--line);
+}
+.contact-intro h2{
+  font-size:26px;
+  line-height:1.25;
+  margin-bottom:8px;
+}
+.contact-intro p{
+  max-width:430px;
+}
+.contact-info-card .contact-row{
+  padding:15px 0;
+  gap:14px;
+}
+.contact-info-card .contact-row .ic{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:linear-gradient(145deg,#e7faf6,#eef4fb);
+  border:1px solid #d8efe9;
+}
+.contact-info-card .contact-row .ic svg{
+  stroke:var(--cyan-dark);
+}
+.contact-info-card .contact-row b{
+  font-size:11.5px;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.contact-info-card .contact-row span{
+  font-size:14.5px;
+  font-weight:600;
+  color:var(--navy);
+}
+.contact-info-card .contact-row a:hover{
+  color:var(--cyan-dark);
+}
+@media(max-width:560px){
+  .contact-section{
+    padding:42px 0 56px;
+  }
+  .contact-info-card{
+    padding:24px 20px 20px;
+  }
+  .contact-map-head,
+  .contact-map-foot{
+    padding-left:18px;
+    padding-right:18px;
+  }
+  .contact-map-foot{
+    flex-direction:column;
+    gap:4px;
+  }
+}
+
+/* ===== FINAL PAGE BANNER COMPACT =====
+   Reduce only vertical navy banner thickness; typography stays unchanged. */
 .page-banner{
   padding:48px 0 34px!important;
 }
 
-/* Force the current WBSL logo assets to refresh too. */
+/* Final logo cache refresh */
 .logo::before{
-  background-image:url('assets/wbsl_logo1.png?v=20260827-banner1')!important;
+  background-image:url('assets/wbsl_logo1.png?v=20260827-finalclean1')!important;
 }
 .foot-logo::before{
-  background-image:url('assets/wbsl_logo2.png?v=20260827-banner1')!important;
-}
-
-/* Keep text sizes exactly as they are in the current site. */
-.page-banner .eyebrow{
-  font-size:12.5px;
-}
-.page-banner h1{
-  font-size:clamp(28px,3.6vw,40px);
-}
-.page-banner .crumb{
-  font-size:13px;
+  background-image:url('assets/wbsl_logo2.png?v=20260827-finalclean1')!important;
 }
 
 @media(max-width:560px){

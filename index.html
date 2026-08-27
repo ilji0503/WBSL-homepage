@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="assets/wbsl_logo1.png?v=20260827-favicon1">
+<link rel="apple-touch-icon" href="assets/wbsl_logo1.png?v=20260827-favicon1">
 <title>WBSL | Wide Bandgap Semiconductor Laboratory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=20260827-compact1">
+<link rel="stylesheet" href="style.css?v=20260827-finalclean1">
 </head>
 <body>
 <header>
@@ -136,6 +138,33 @@
 </footer>
 <script src="data/publications.js?v=20260819-5"></script>
 <script src="data/news.js?v=20260819-5"></script>
-<script src="script.js?v=20260827-pub1"></script>
+<script src="script.js?v=20260827-finalclean1"></script>
+<script>
+(function(){
+  function withBreaks(text){
+    return String(text || "")
+      .replace(/,\s+/g, ",<wbr> ")
+      .replace(/\/\s*/g, "/<wbr>")
+      .replace(/–\s*/g, "–<wbr>")
+      .replace(/-\s*/g, "-<wbr>");
+  }
+  function applyHomePublicationBreaks(){
+    document.querySelectorAll('#home-publication-list .home-publication-en, #home-publication-list .home-publication-ko').forEach(function(el){
+      const txt = (el.textContent || ).trim();
+      if(!txt) return;
+      el.innerHTML = withBreaks(txt);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    applyHomePublicationBreaks();
+    setTimeout(applyHomePublicationBreaks, 150);
+    setTimeout(applyHomePublicationBreaks, 500);
+    const target = document.getElementById('home-publication-list');
+    if(target){
+      new MutationObserver(function(){ applyHomePublicationBreaks(); }).observe(target,{childList:true,subtree:true});
+    }
+  });
+})();
+</script>
 </body>
 </html>

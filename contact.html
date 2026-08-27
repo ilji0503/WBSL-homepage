@@ -3,12 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="assets/wbsl_logo1.png?v=20260827-favicon1">
+<link rel="apple-touch-icon" href="assets/wbsl_logo1.png?v=20260827-favicon1">
 <title>Contact us | WBSL</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="style.css?v=20260827-contact2">
+<link rel="stylesheet" href="style.css?v=20260827-finalclean1">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIINfQ3ynh2bVh6oONo7+QKbMZ0tmRj4QmE="
+  crossorigin="">
+
+<style>
+  #wbsl-map{
+    width:100%;
+    min-height:365px;
+    height:365px;
+    background:#eef3f8;
+  }
+  .wbsl-map-marker{
+    position:relative;
+    width:58px;
+    height:68px;
+  }
+  .wbsl-map-marker .marker-logo{
+    position:absolute;
+    left:3px;
+    top:0;
+    width:52px;
+    height:52px;
+    display:grid;
+    place-items:center;
+    border-radius:16px;
+    background:#fff;
+    border:2px solid #0f1f3d;
+    box-shadow:0 8px 22px rgba(15,31,61,.28);
+  }
+  .wbsl-map-marker .marker-logo img{
+    width:43px;
+    height:43px;
+    object-fit:contain;
+    display:block;
+  }
+  .wbsl-map-marker .marker-tip{
+    position:absolute;
+    left:23px;
+    top:47px;
+    width:14px;
+    height:14px;
+    background:#0f1f3d;
+    transform:rotate(45deg);
+    border-radius:2px;
+    z-index:-1;
+  }
+  .leaflet-popup-content-wrapper{
+    border-radius:12px;
+    box-shadow:0 12px 30px rgba(15,31,61,.18);
+  }
+  .leaflet-popup-content{
+    margin:13px 16px;
+    font-family:'Pretendard Variable',Pretendard,sans-serif;
+    line-height:1.55;
+  }
+  .wbsl-map-popup b{
+    display:block;
+    color:#0f1f3d;
+    font-size:14px;
+    margin-bottom:3px;
+  }
+  .wbsl-map-popup span{
+    color:#5b6b82;
+    font-size:12px;
+  }
+</style>
 </head>
 <body>
 <header><div class="wrap"><nav><a href="index.html" class="logo"><img src="assets/wbsl_logo1.png" alt="WBSL Logo" class="logo-img"><span class="logo-text">WBSL<span>Wide Bandgap Semiconductor Laboratory</span></span></a><ul class="nav-links"><li><a href="professor.html">Professor</a></li><li><a href="research.html">Research</a></li><li><a href="publication.html">Publication</a></li><li><a href="people.html">People</a></li><li class="nav-board-group"><a href="board.html" class="nav-board-link">Board <span class="nav-board-caret" aria-hidden="true">▾</span></a><ul class="nav-dropdown-menu"><li><a href="board.html">Lab Activities</a></li><li><a href="labmeeting.html">Lab Meeting</a></li></ul></li></ul><div class="nav-cta"><a href="contact.html" class="btn btn-outline">Contact us</a><button class="burger" aria-label="메뉴 열기"><span></span><span></span><span></span></button></div></nav></div></header>
@@ -38,11 +107,6 @@
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg></div>
         <div><b>Website</b><span><a href="https://han.pknu.ac.kr" target="_blank" rel="noopener">han.pknu.ac.kr</a></span></div>
       </div>
-
-      <div class="contact-quick">
-        <a href="mailto:han@pknu.ac.kr" class="contact-quick-btn primary">Send Email</a>
-        <a href="tel:+82516296409" class="contact-quick-btn">Call Lab</a>
-      </div>
     </div>
 
     <div class="contact-map-card">
@@ -53,9 +117,7 @@
         </div>
         <span class="contact-room">Room 902-1</span>
       </div>
-      <div class="map-box map-embed">
-        <iframe title="WBSL location - Pukyong National University Gaon Building" src="https://www.google.com/maps?q=%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C%20%EB%82%A8%EA%B5%AC%20%EC%9A%A9%EC%86%8C%EB%A1%9C%2045%20%EA%B0%80%EC%98%A8%EA%B4%80&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-      </div>
+      <div class="map-box map-embed"><div id="wbsl-map" aria-label="WBSL location map"></div></div>
       <div class="contact-map-foot">
         <b>Pukyong National University, Daeyeon Campus</b>
         <span>45 Yongso-ro, Nam-gu, Busan</span>
@@ -64,6 +126,55 @@
   </div>
 </section>
 <footer><div class="wrap"><div class="foot-grid"><div><div class="foot-logo"><img src="assets/wbsl_logo2.png" alt="WBSL Logo" class="footer-logo-img"><b>WBSL</b></div><p style="font-size:13.5px; line-height:1.7;">국립부경대학교 전기공학부 디스플레이반도체공학전공<br>부산광역시 남구 용소로 45, 가온관(B21)</p></div><div><h4>Sitemap</h4><ul><li><a href="professor.html">Professor</a></li><li><a href="research.html">Research</a></li><li><a href="publication.html">Publication</a></li><li><a href="people.html">People</a></li></ul></div><div><h4>Lab</h4><ul><li><a href="board.html">Board</a></li><li><a href="labmeeting.html">Lab Meeting</a></li><li><a href="contact.html">Contact us</a></li><li><a href="https://han.pknu.ac.kr" target="_blank" rel="noopener">Lab website</a></li></ul></div><div><h4>Contact</h4><ul><li><a href="mailto:han@pknu.ac.kr">han@pknu.ac.kr</a></li><li><a href="tel:+82516296409">+82-51-629-6409</a></li></ul></div></div><div class="foot-bottom"><span>© 2026 WBSL. All rights reserved.</span><span>Pukyong National University</span></div></div></footer>
-<script src="script.js?v=20260827-pub1"></script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+<script>
+(() => {
+  const mapEl = document.getElementById('wbsl-map');
+  if (!mapEl || typeof L === 'undefined') return;
+
+  // Gaon Building (B21), Pukyong National University
+  const wbsl = [35.1340, 129.1048];
+
+  const map = L.map('wbsl-map', {
+    scrollWheelZoom: false,
+    zoomControl: true
+  }).setView(wbsl, 17);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 20,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const wbslIcon = L.divIcon({
+    className: '',
+    html: `
+      <div class="wbsl-map-marker" aria-label="WBSL">
+        <div class="marker-logo">
+          <img src="assets/wbsl_logo1.png" alt="WBSL">
+        </div>
+        <div class="marker-tip"></div>
+      </div>
+    `,
+    iconSize: [58, 68],
+    iconAnchor: [29, 63],
+    popupAnchor: [0, -58]
+  });
+
+  const marker = L.marker(wbsl, { icon: wbslIcon }).addTo(map);
+  marker.bindPopup(`
+    <div class="wbsl-map-popup">
+      <b>WBSL</b>
+      <span>가온관(B21) 902-1호<br>국립부경대학교 대연캠퍼스</span>
+    </div>
+  `).openPopup();
+
+  marker.on('click', () => marker.openPopup());
+})();
+</script>
+
+<script src="script.js?v=20260827-finalclean1"></script>
 </body>
 </html>
